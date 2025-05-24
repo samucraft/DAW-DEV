@@ -10,10 +10,10 @@
 
 static key keys[] = {
     {"C" , 7 }, // C     - Do
-    {"C#", 11}, // C#/Db - Do sos. / Re bemol
-    {"D" , 13}, // D     - Re
-    {"D#", 15}, // D#/Eb - Do sos. / Mi bemol
-    {"E" , 16}, // E     - Mi
+    {"C#", 0}, // C#/Db - Do sos. / Re bemol
+    {"D" , 2}, // D     - Re
+    {"D#", 3}, // D#/Eb - Do sos. / Mi bemol
+    {"E" , 4}, // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol
