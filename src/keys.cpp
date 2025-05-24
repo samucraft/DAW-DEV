@@ -9,17 +9,17 @@
 // #define MAX_KEYS 12
 
 static key keys[] = {
-    {"C" , 7 } // C     - Do
-    {"C#", 11} // C#/Db - Do sos. / Re bemol
-    {"D" , 13} // D     - Re
-    {"D#", 15} // D#/Eb - Do sos. / Mi bemol
-    {"E" , 16} // E     - Mi
-    // {"F" , 7 } // F     - Fa
-    // {"F#", 7 } // F#/Gb - Fa sos. / Sol bemol
-    // {"G" , 7 } // G     - Sol
-    // {"G#", 7 } // G#/Ab - Sol sos. / La bemol
-    // {"A" , 7 } // A     - La
-    // {"A#", 7 } // A#/Bb - La sos. / Si bemol
+    {"C" , 7 }, // C     - Do
+    {"C#", 11}, // C#/Db - Do sos. / Re bemol
+    {"D" , 13}, // D     - Re
+    {"D#", 15}, // D#/Eb - Do sos. / Mi bemol
+    {"E" , 16}, // E     - Mi
+    // {"F" , 7 }, // F     - Fa
+    // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
+    // {"G" , 7 }, // G     - Sol
+    // {"G#", 7 }, // G#/Ab - Sol sos. / La bemol
+    // {"A" , 7 }, // A     - La
+    // {"A#", 7 }, // A#/Bb - La sos. / Si bemol
     // {"B" , 7 } // B     - Si
 };
 
