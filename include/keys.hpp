@@ -25,4 +25,7 @@ void set_key(key *key, uint8_t state);
 // Get key state
 uint8_t get_key(key *key);
 
+// Main loop routine for keys
+void loop_keys();
+
 #endif

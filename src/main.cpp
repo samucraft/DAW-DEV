@@ -15,6 +15,7 @@ int main() {
     std::signal(SIGINT, signalHandler);
 
     while (true) {
+        loop_keys();
     }
 
     std::cout << "... exiting app ...\n";

@@ -42,6 +42,18 @@ uint8_t get_key(key *key) {
     return digitalRead(key->pin);
 }
 
+void loop_keys() {
+    uint8_t tmp_state;
+    for (size_t i = 0; i < MAX_KEYS; i++) {
+        tmp_state = get_key(&keys[i]);
+        if (tmp_state != keys[i].state) {
+            update_key(&keys[i], tmp_state);
+            std::cout << "Key " << keys[i].name << " changed to "
+                      << static_cast<int>(tmp_state) <<"!\n";
+        }
+    }
+}
+
 void update_key(key *key, uint8_t state) {
     key->state = state;
 }
