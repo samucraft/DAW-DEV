@@ -18,10 +18,12 @@ TARGET = $(BIN_DIR)/main
 # Sources
 SRC = $(SRC_DIR)/main.cpp
 KEYS_SRC = $(SRC_DIR)/keys.cpp
+SIGN_SRC = $(SRC_DIR)/signal.cpp
 
 # Objects
 OBJ = $(OBJ_DIR)/main.o
 KEYS_OBJ = $(OBJ_DIR)/keys.o
+SIGN_OBJ = $(OBJ_DIR)/signal.o
 
 CXXFLAGS += -I$(INC_DIR)
 
@@ -32,9 +34,9 @@ WIP_LIB = -lwiringPi
 all: $(TARGET)
 
 # Link object file to create executable
-$(TARGET): $(OBJ) $(KEYS_OBJ)
+$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(WIP_LIB)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(WIP_LIB)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
@@ -45,6 +47,11 @@ $(OBJ): $(SRC)
 $(KEYS_OBJ): $(KEYS_SRC)
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $(KEYS_SRC) -o $(KEYS_OBJ)
+
+# Compile signal module
+$(SIGN_OBJ): $(SIGN_SRC)
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $(SIGN_SRC) -o $(SIGN_OBJ)
 
 # Clean up build files
 clean:
