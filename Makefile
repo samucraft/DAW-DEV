@@ -25,13 +25,16 @@ KEYS_OBJ = $(OBJ_DIR)/keys.o
 
 CXXFLAGS += -I$(INC_DIR)
 
+# Libraries
+WIP_LIB = -lwiringPi
+
 # Default target
 all: $(TARGET)
 
 # Link object file to create executable
 $(TARGET): $(OBJ) $(KEYS_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(WIP_LIB)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
