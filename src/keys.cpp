@@ -15,8 +15,11 @@ static key keys[] = {
 void update_key(key *key, uint8_t state);
 
 uint8_t init_keys() {
+    std::cout << "- Keys initialization ...\n";
+
     std::cout << "  * initializing WiringPi module ...\n";
     if (wiringPiSetup()) {
+        std::cout << " Failed with code : \n" << KEY_WIP_INI;
         return KEY_WIP_INI;
     }
 
@@ -26,6 +29,7 @@ uint8_t init_keys() {
         set_key(&keys[i], KEY_UNPRESSED);
     }
 
+    std::cout << " Success!\n";
     return KEY_SUCCESS;
 }
 
