@@ -14,6 +14,13 @@ typedef struct {
     float amplitude;
 } Wave;
 
+Wave data = {
+    .phase = 0.0f,
+    .frequency = 440.63f,
+    .amplitude = 0.25f
+};
+
+
 static PaStream *stream;
 
 // Audio callback function
@@ -43,11 +50,6 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
 
 uint8_t init_sound() {
     PaError err;
-    Wave data = {
-        .phase = 0.0f,
-        .frequency = 440.63f,
-        .amplitude = 0.25f
-    };
 
     err = Pa_Initialize();
     if (err != paNoError) {
