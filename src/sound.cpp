@@ -11,15 +11,39 @@
 #define MAX_TONES 5
 
 typedef struct {
-    float phase;
-    float frequency;
-    float amplitude;
+    float phase1;
+    float phase2;
+    float phase3;
+    float phase4;
+    float phase5;
+    float frequency1;
+    float frequency2;
+    float frequency3;
+    float frequency4;
+    float frequency5;
+    float amplitude1;
+    float amplitude2;
+    float amplitude3;
+    float amplitude4;
+    float amplitude5;
 } Wave;
 
 static Wave data = {
-    .phase = 0.0f,
-    .frequency = 440.63f,
-    .amplitude = 0.25f
+    .phase1 = 0.0f,
+    .phase2 = 0.0f,
+    .phase3 = 0.0f,
+    .phase4 = 0.0f,
+    .phase5 = 0.0f,
+    .frequency1 = 440.63f,
+    .frequency2 = 440.63f,
+    .frequency3 = 440.63f,
+    .frequency4 = 440.63f,
+    .frequency5 = 440.63f,
+    .amplitude1 = 0.25f,
+    .amplitude2 = 0.25f,
+    .amplitude3 = 0.25f,
+    .amplitude4 = 0.25f,
+    .amplitude5 = 0.25f
 };
 
 static PaStream *stream;
@@ -34,20 +58,48 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
                          void *userData) {
     Wave *data = (Wave *)userData;
     float *out = (float *)outputBuffer;
-    float phase = data->phase;
+    float phase1 = data->phase1;
+    float phase2 = data->phase2;
+    float phase3 = data->phase3;
+    float phase4 = data->phase4;
+    float phase5 = data->phase5;
 
     for (unsigned int i = 0; i < framesPerBuffer; i++) {
-        float sample = gates[0] ? data->amplitude * sinf(phase) : 0.0f;
+        float sample1 = gates[0] ? data->amplitude1 * sinf(phase1) : 0.0f;
+        float sample2 = gates[1] ? data->amplitude2 * sinf(phase2) : 0.0f;
+        float sample3 = gates[2] ? data->amplitude3 * sinf(phase3) : 0.0f;
+        float sample4 = gates[3] ? data->amplitude4 * sinf(phase4) : 0.0f;
+        float sample5 = gates[4] ? data->amplitude5 * sinf(phase5) : 0.0f;
 
-        *out++ = sample;  // Left
-        *out++ = sample;  // Right
+        *out++ = sample1 + sample2 + sample3 + sample4 + sample5;  // Left
+        *out++ = sample1 + sample2 + sample3 + sample4 + sample5;  // Right
         
-        phase += 2.0f * (float)M_PI * data->frequency / SAMPLE_RATE;
-        if (phase >= 2.0f * (float)M_PI)
-            phase -= 2.0f * (float)M_PI;
+        phase1 += 2.0f * (float)M_PI * data->frequency1 / SAMPLE_RATE;
+        if (phase1 >= 2.0f * (float)M_PI)
+            phase1 -= 2.0f * (float)M_PI;
+
+        phase2 += 2.0f * (float)M_PI * data->frequency2 / SAMPLE_RATE;
+        if (phase2 >= 2.0f * (float)M_PI)
+            phase2 -= 2.0f * (float)M_PI;
+
+        phase3 += 2.0f * (float)M_PI * data->frequency3 / SAMPLE_RATE;
+        if (phase3 >= 2.0f * (float)M_PI)
+            phase3 -= 2.0f * (float)M_PI;
+
+        phase4 += 2.0f * (float)M_PI * data->frequency4 / SAMPLE_RATE;
+        if (phase4 >= 2.0f * (float)M_PI)
+            phase4 -= 2.0f * (float)M_PI;
+
+        phase5 += 2.0f * (float)M_PI * data->frequency5 / SAMPLE_RATE;
+        if (phase5 >= 2.0f * (float)M_PI)
+            phase5 -= 2.0f * (float)M_PI;
     }
 
-    data->phase = phase;
+    data->phase1 = phase1;
+    data->phase2 = phase2;
+    data->phase3 = phase3;
+    data->phase4 = phase4;
+    data->phase5 = phase5;
     return paContinue;
 }
 
