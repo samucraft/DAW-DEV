@@ -1,6 +1,7 @@
 # project
 bin/
 build/
+*.out
 
 # env
 .vscode/
