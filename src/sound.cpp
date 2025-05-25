@@ -8,20 +8,23 @@
 #define SAMPLE_RATE 44100
 #define FRAMES_PER_BUFFER 256
 
+#define MAX_TONES 5
+
 typedef struct {
     float phase;
     float frequency;
     float amplitude;
 } Wave;
 
-Wave data = {
+static Wave data = {
     .phase = 0.0f,
     .frequency = 440.63f,
     .amplitude = 0.25f
 };
 
-
 static PaStream *stream;
+
+static bool gates[] = {false, false, false, false, false};
 
 // Audio callback function
 static int audioCallback(const void *inputBuffer, void *outputBuffer,
@@ -34,7 +37,7 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     float phase = data->phase;
 
     for (unsigned int i = 0; i < framesPerBuffer; i++) {
-        float sample = data->amplitude * sinf(phase);
+        float sample = gates[0] ? data->amplitude * sinf(phase) : 0.0f;
 
         *out++ = sample;  // Left
         *out++ = sample;  // Right
@@ -103,4 +106,8 @@ void cleanup_sound() {
     Pa_StopStream(stream);
     Pa_CloseStream(stream);
     Pa_Terminate();
+}
+
+void trigger_gate(uint8_t index) {
+    gates[index] = !gates[index];
 }

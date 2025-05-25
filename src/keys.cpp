@@ -3,6 +3,7 @@
 #include <wiringPi.h>
 
 #include "keys.hpp"
+#include "sound.hpp"
 
 // Defines the max number of keys to load
 #define MAX_KEYS 5
@@ -62,6 +63,8 @@ void loop_keys() {
             update_key(&keys[i], tmp_state);
             std::cout << "Key " << keys[i].name << " changed to "
                       << static_cast<int>(tmp_state) <<"!\n";
+            
+            trigger_gate(i);
         }
     }
 }
