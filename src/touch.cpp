@@ -16,7 +16,7 @@ static touch touches[] = {
 // Update internal key state
 void update_touch(touch *touch, uint8_t state);
 
-uint8_t init_keys() {
+void init_touch() {
     std::cout << "  * initializing touches ...\n";
     for (size_t i = 0; i < MAX_TOUCH; i++) {
         pinMode(touches[i].pin, OUTPUT);
@@ -24,7 +24,6 @@ uint8_t init_keys() {
     }
 
     std::cout << " Success!\n";
-    return 0;
 }
 
 void set_touch(touch *touch, uint8_t state) {

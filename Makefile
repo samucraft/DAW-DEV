@@ -20,12 +20,14 @@ SRC = $(SRC_DIR)/main.cpp
 KEYS_SRC = $(SRC_DIR)/keys.cpp
 SIGN_SRC = $(SRC_DIR)/signal.cpp
 SOUND_SRC = $(SRC_DIR)/sound.cpp
+TOUCH_SRC = $(SRC_DIR)/touch.cpp
 
 # Objects
 OBJ = $(OBJ_DIR)/main.o
 KEYS_OBJ = $(OBJ_DIR)/keys.o
 SIGN_OBJ = $(OBJ_DIR)/signal.o
 SOUND_OBJ = $(OBJ_DIR)/sound.o
+TOUCH_OBJ = $(OBJ_DIR)/touch.o
 
 CXXFLAGS += -I$(INC_DIR)
 
@@ -38,9 +40,9 @@ LIBS = $(WIP_LIB) $(PA_LIB)
 all: $(TARGET)
 
 # Link object file to create executable
-$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ)
+$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(LIBS)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
@@ -61,6 +63,11 @@ $(SIGN_OBJ): $(SIGN_SRC)
 $(SOUND_OBJ): $(SOUND_SRC)
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $(SOUND_SRC) -o $(SOUND_OBJ)
+
+# Compile signal module
+$(TOUCH_OBJ): $(TOUCH_SRC)
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $(TOUCH_SRC) -o $(TOUCH_OBJ)
 
 # Clean up build files
 clean:
