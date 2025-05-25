@@ -10,11 +10,12 @@
 // #define MAX_KEYS 12
 
 static key keys[] = {
-    {"C" , 7 }, // C     - Do
-    {"C#", 0}, // C#/Db - Do sos. / Re bemol
-    {"D" , 2}, // D     - Re
-    {"D#", 3}, // D#/Eb - Do sos. / Mi bemol
-    {"E" , 4}, // E     - Mi
+    // Need updates
+    {"C4" , 7 }, // C     - Do
+    {"E4", 0}, // C#/Db - Do sos. / Re bemol
+    {"G4" , 2}, // D     - Re
+    {"B4", 3}, // D#/Eb - Do sos. / Mi bemol
+    {"C5" , 4}, // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol
