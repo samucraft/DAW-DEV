@@ -3,4 +3,6 @@
 
 uint8_t init_sound();
 
+void cleanup_sound();
+
 #endif

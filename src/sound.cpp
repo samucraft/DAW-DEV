@@ -14,6 +14,8 @@ typedef struct {
     float amplitude;
 } Wave;
 
+static PaStream *stream;
+
 // Audio callback function
 static int audioCallback(const void *inputBuffer, void *outputBuffer,
                          unsigned long framesPerBuffer,
@@ -40,7 +42,6 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
 }
 
 uint8_t init_sound() {
-    PaStream *stream;
     PaError err;
     Wave data = {
         .phase = 0.0f,
@@ -93,23 +94,11 @@ uint8_t init_sound() {
         return 1;
     }
 
-    char key;
-    bool running = true;
-    while(running) {
-        key = getchar();
-        switch (key) {
-            case 'q':
-                running = false;
-                break;
+    return 0;
+}
 
-            default:
-                break;
-        }
-    }
-
+void cleanup_sound() {
     Pa_StopStream(stream);
     Pa_CloseStream(stream);
     Pa_Terminate();
-
-    return 0;
 }
