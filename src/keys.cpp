@@ -11,11 +11,11 @@
 
 static key keys[] = {
     // Need updates
-    {"C4" , 7 }, // C     - Do
-    {"E4", 0}, // C#/Db - Do sos. / Re bemol
-    {"G4" , 2}, // D     - Re
-    {"B4", 3}, // D#/Eb - Do sos. / Mi bemol
-    {"C5" , 4}, // E     - Mi
+    {"C4", 4 }, // C     - Do
+    {"E4", 5 }, // C#/Db - Do sos. / Re bemol
+    {"G4", 21}, // D     - Re
+    {"B4", 22}, // D#/Eb - Do sos. / Mi bemol
+    {"C5", 26}, // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol

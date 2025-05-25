@@ -5,6 +5,7 @@
 #include "keys.hpp"
 #include "signal.hpp"
 #include "sound.hpp"
+#include "touch.hpp"
 #include "utils.hpp"
 
 int main() {
@@ -18,6 +19,7 @@ int main() {
 
     while (true) {
         loop_keys();
+        loop_touch();
     }
 
     cleanup_sound();
