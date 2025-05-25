@@ -20,6 +20,8 @@ int main() {
         loop_keys();
     }
 
+    cleanup_sound();
+
     std::cout << "... exiting app ...\n";
     return 0;
 }
