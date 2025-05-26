@@ -9,9 +9,9 @@
 #define MAX_TOUCH 3
 
 static touch touches[] = {
-    {7 , false},
-    {0, false},
-    {3, false}
+    {0 , false},
+    {3, false},
+    {7, false}
 };
 
 // Update internal key state
