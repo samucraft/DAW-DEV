@@ -204,6 +204,8 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     data->phase4 = phase4;
     data->phase5 = phase5;
 
+    data->vibratoPhase = vibratoPhase;
+
     if (vibrato) {
         data->repetitions_left--;
         if (data->repetitions_left == 0) {
