@@ -44,7 +44,9 @@ void loop_touch() {
             update_touch(&touches[i], tmp_state);
             std::cout << "Touch " << static_cast<int>(i) << " changed to "
                       << static_cast<int>(tmp_state) <<"!\n";
-            trigger_sample(i);
+            if (tmp_state) {
+                trigger_sample(i);
+            }
         }
     }
 }
