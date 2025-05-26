@@ -11,6 +11,7 @@
 #include <wiringPi.h>
 
 #include "accel.hpp"
+#include "sound.hpp"
 
 #define Device_Address 0x68	/*Device Address/Identifier for MPU6050*/
 
@@ -110,7 +111,11 @@ void loop_accel() {
     // float mag = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
     
     float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
-    printf("Mag is %.3f\n", mag);
-    
-    delay(500);
+    // printf("Mag is %.3f\n", mag);
+
+    if (mag >= 1.1f) {
+        trigger_vibrato();
+    }
+
+    delay(100);
 }

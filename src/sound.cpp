@@ -15,6 +15,10 @@
 #define SNARE_SAMPLE_PATH  "sounds/snare.wav"
 #define HI_HAT_SAMPLE_PATH "sounds/hi-hat.wav"
 
+#define VIBRATO_FREQUENCY   10.0f // 5 Hz vibrato
+#define VIBRATO_DEPTH       10.0f // deviation in Hz
+#define MAX_VIBRATO_WINDOWS 200
+
 typedef struct {
     float phase1;
     float phase2;
@@ -31,6 +35,8 @@ typedef struct {
     float amplitude3;
     float amplitude4;
     float amplitude5;
+    volatile float vibratoPhase;
+    volatile uint8_t repetitions_left;
 } Wave;
 
 static Wave data = {
@@ -48,7 +54,9 @@ static Wave data = {
     .amplitude2 = 0.25f,
     .amplitude3 = 0.25f,
     .amplitude4 = 0.25f,
-    .amplitude5 = 0.25f
+    .amplitude5 = 0.25f,
+    .vibratoPhase = 0.0f,
+    .repetitions_left = 0
 };
 
 static PaStream *stream;
@@ -67,6 +75,9 @@ struct Sample {
 static Sample kick_sample;
 static Sample snare_sample;
 static Sample hi_hat_sample;
+
+static volatile bool vibrato;
+static float vibratoDepth;
 
 float* loadWavFile(const char *path, int *numFrames, int *numChannels, int *sampleRate) {
     SF_INFO sfinfo;
@@ -100,8 +111,19 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     float phase3 = data->phase3;
     float phase4 = data->phase4;
     float phase5 = data->phase5;
+    float vibratoPhase = data->vibratoPhase;
 
     for (unsigned int i = 0; i < framesPerBuffer; i++) {
+        // Comput vibrato if enabled
+        float vibratoMod = vibrato ? vibratoDepth * sinf(vibratoPhase) : 0.0f;
+
+        // Add vibrato to frequency is computed (FM modulation)
+        float current_frequency1 = data->frequency1 + vibratoMod;
+        float current_frequency2 = data->frequency2 + vibratoMod;
+        float current_frequency3 = data->frequency3 + vibratoMod;
+        float current_frequency4 = data->frequency4 + vibratoMod;
+        float current_frequency5 = data->frequency5 + vibratoMod;
+
         // Mix sample playback (kick) if active
         float left_kick_sample  = 0.0f;
         float right_kick_sample = 0.0f;
@@ -151,25 +173,29 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
         *out++ = sample1 + sample2 + sample3 + sample4 + sample5 + left_kick_sample + left_snare_sample + left_hi_hat_sample;   // Left
         *out++ = sample1 + sample2 + sample3 + sample4 + sample5 + right_kick_sample + right_snare_sample + right_hi_hat_sample;// Right
         
-        phase1 += 2.0f * (float)M_PI * data->frequency1 / SAMPLE_RATE;
+        phase1 += 2.0f * (float)M_PI * current_frequency1 / SAMPLE_RATE;
         if (phase1 >= 2.0f * (float)M_PI)
             phase1 -= 2.0f * (float)M_PI;
 
-        phase2 += 2.0f * (float)M_PI * data->frequency2 / SAMPLE_RATE;
+        phase2 += 2.0f * (float)M_PI * current_frequency2 / SAMPLE_RATE;
         if (phase2 >= 2.0f * (float)M_PI)
             phase2 -= 2.0f * (float)M_PI;
 
-        phase3 += 2.0f * (float)M_PI * data->frequency3 / SAMPLE_RATE;
+        phase3 += 2.0f * (float)M_PI * current_frequency3 / SAMPLE_RATE;
         if (phase3 >= 2.0f * (float)M_PI)
             phase3 -= 2.0f * (float)M_PI;
 
-        phase4 += 2.0f * (float)M_PI * data->frequency4 / SAMPLE_RATE;
+        phase4 += 2.0f * (float)M_PI * current_frequency4 / SAMPLE_RATE;
         if (phase4 >= 2.0f * (float)M_PI)
             phase4 -= 2.0f * (float)M_PI;
 
-        phase5 += 2.0f * (float)M_PI * data->frequency5 / SAMPLE_RATE;
+        phase5 += 2.0f * (float)M_PI * current_frequency5 / SAMPLE_RATE;
         if (phase5 >= 2.0f * (float)M_PI)
             phase5 -= 2.0f * (float)M_PI;
+
+        vibratoPhase += 2.0f * (float)M_PI * VIBRATO_FREQUENCY / SAMPLE_RATE;
+        if (vibratoPhase >= 2.0f * (float)M_PI)
+            vibratoPhase -= 2.0f * (float)M_PI;
     }
 
     data->phase1 = phase1;
@@ -177,6 +203,15 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     data->phase3 = phase3;
     data->phase4 = phase4;
     data->phase5 = phase5;
+
+    if (vibrato) {
+        data->repetitions_left--;
+        if (data->repetitions_left == 0) {
+            vibrato = false;
+            std::cout << "Vibrato ended\n";
+        }
+    }
+
     return paContinue;
 }
 
@@ -267,6 +302,9 @@ uint8_t init_sound() {
         return 1;
     }
 
+    vibrato = false;
+    vibratoDepth = (VIBRATO_DEPTH / VIBRATO_FREQUENCY) * 2.0f * M_PI;
+
     return 0;
 }
 
@@ -308,4 +346,10 @@ void trigger_sample(uint8_t index) {
             std::cout << "trigger index ?\n";
             break;
     }
+}
+
+void trigger_vibrato() {
+    vibrato = true;
+    data.repetitions_left = MAX_VIBRATO_WINDOWS;
+    std::cout << "Vibrato started\n";
 }
