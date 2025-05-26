@@ -88,22 +88,29 @@ void loop_accel() {
     Acc_y = read_raw_data(ACCEL_YOUT_H);
     Acc_z = read_raw_data(ACCEL_ZOUT_H);
 
-    Gyro_x = read_raw_data(GYRO_XOUT_H);
-    Gyro_y = read_raw_data(GYRO_YOUT_H);
-    Gyro_z = read_raw_data(GYRO_ZOUT_H);
+    // Disable
+    // Gyro_x = read_raw_data(GYRO_XOUT_H);
+    // Gyro_y = read_raw_data(GYRO_YOUT_H);
+    // Gyro_z = read_raw_data(GYRO_ZOUT_H);
 
     /* Divide raw value by sensitivity scale factor */
     Ax = Acc_x / 16384.0f;
     Ay = Acc_y / 16384.0f;
     Az = Acc_z / 16384.0f;
 
-    Gx = Gyro_x / 131.0f;
-    Gy = Gyro_y / 131.0f;
-    Gz = Gyro_z / 131.0f;
+    // Disable
+    // Gx = Gyro_x / 131.0f;
+    // Gy = Gyro_y / 131.0f;
+    // Gz = Gyro_z / 131.0f;
 
-    printf("\n Gx=%.3f °/s\tGy=%.3f °/s\tGz=%.3f °/s\tAx=%.3f g\tAy=%.3f g\tAz=%.3f g\n",Gx,Gy,Gz,Ax,Ay,Az);
+    // Disable
+    // printf("\n Gx=%.3f °/s\tGy=%.3f °/s\tGz=%.3f °/s\tAx=%.3f g\tAy=%.3f g\tAz=%.3f g\n",Gx,Gy,Gz,Ax,Ay,Az);
 
-    float mag = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
+    // Disable
+    // float mag = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
+    
+    float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
     printf("Mag is %.3f", mag);
+    
     delay(500);
 }
