@@ -34,7 +34,8 @@ CXXFLAGS += -I$(INC_DIR)
 # Libraries
 WIP_LIB = -lwiringPi
 PA_LIB = -lportaudio
-LIBS = $(WIP_LIB) $(PA_LIB)
+SND_LIB = -lsndfile
+LIBS = $(WIP_LIB) $(PA_LIB) $(SND_LIB)
 
 # Default target
 all: $(TARGET)

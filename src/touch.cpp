@@ -2,6 +2,7 @@
 #include <iostream>
 #include <wiringPi.h>
 
+#include "sound.hpp"
 #include "touch.hpp"
 
 // Defines the max number of keys to load
@@ -43,6 +44,7 @@ void loop_touch() {
             update_touch(&touches[i], tmp_state);
             std::cout << "Touch " << static_cast<int>(i) << " changed to "
                       << static_cast<int>(tmp_state) <<"!\n";
+            trigger_sample(i);
         }
     }
 }
