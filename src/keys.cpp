@@ -15,7 +15,7 @@ static key keys[] = {
     {"E4", 5 }, // C#/Db - Do sos. / Re bemol
     {"G4", 21}, // D     - Re
     {"B4", 22}, // D#/Eb - Do sos. / Mi bemol
-    {"C5", 26}, // E     - Mi
+    {"C5", 23}, // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol

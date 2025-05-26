@@ -9,8 +9,8 @@
 
 static touch touches[] = {
     {7 , false},
-    {11, false},
-    {15, false}
+    {0, false},
+    {3, false}
 };
 
 // Update internal key state
