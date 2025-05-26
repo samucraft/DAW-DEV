@@ -110,7 +110,7 @@ void loop_accel() {
     // float mag = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
     
     float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
-    printf("Mag is %.3f", mag);
+    printf("Mag is %.3f\n", mag);
     
     delay(500);
 }
