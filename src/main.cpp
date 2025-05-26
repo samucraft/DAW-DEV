@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <iostream>
 
+#include "accel.hpp"
 #include "keys.hpp"
 #include "signal.hpp"
 #include "sound.hpp"
@@ -14,6 +15,7 @@ int main() {
     RET_IF_ERR(init_keys());
     RET_IF_ERR(init_sound());
     init_touch();
+    init_accel();
 
     // Register the signal handler for SIGINT
     std::signal(SIGINT, signalHandler);
@@ -21,6 +23,7 @@ int main() {
     while (true) {
         loop_keys();
         loop_touch();
+        loop_accel();
     }
 
     cleanup_sound();
