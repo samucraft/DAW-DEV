@@ -103,7 +103,7 @@ void loop_accel() {
 
     printf("\n Gx=%.3f °/s\tGy=%.3f °/s\tGz=%.3f °/s\tAx=%.3f g\tAy=%.3f g\tAz=%.3f g\n",Gx,Gy,Gz,Ax,Ay,Az);
 
-    float mag = std::hypot(std::hypot(Ax, Ay, Az), std::hypot(Gx, Gy, Gz));
+    float mag = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
     printf("Mag is %.3f", mag);
     delay(500);
 }
