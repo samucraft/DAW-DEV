@@ -1,0 +1,15 @@
+[Unit]
+Description=DAW Device
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /home/gsmuga3/workdir/github/DAW-DEV/service/service
+WorkingDirectory=/home/gsmuga3/workdir/github/DAW-DEV/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=gsmuga3
+
+[Install]
+WantedBy=multi-user.target
+

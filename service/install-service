@@ -1,0 +1,4 @@
+#/bin/bash
+
+sudo cp -f ~/workdir/github/DAW-DEV/service/daw-dev.service /lib/systemd/system/.
+

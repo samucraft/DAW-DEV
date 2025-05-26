@@ -1,0 +1,4 @@
+#/bin/bash
+
+cd ~/workdir/github/DAW-DEV && ./bin/main
+
