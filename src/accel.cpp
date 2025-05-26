@@ -4,6 +4,7 @@
     http://www.electronicwings.com
 */
 
+#include <cmath>
 #include <wiringPiI2C.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -101,5 +102,8 @@ void loop_accel() {
     Gz = Gyro_z / 131.0f;
 
     printf("\n Gx=%.3f °/s\tGy=%.3f °/s\tGz=%.3f °/s\tAx=%.3f g\tAy=%.3f g\tAz=%.3f g\n",Gx,Gy,Gz,Ax,Ay,Az);
+
+    float mag = std::hypot(std::hypot(Ax, Ay, Az), std::hypot(Gx, Gy, Gz));
+    printf("Mag is %.3f", mag);
     delay(500);
 }
