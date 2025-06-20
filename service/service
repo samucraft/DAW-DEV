@@ -1,4 +1,18 @@
-#/bin/bash
+#!/bin/bash
 
-cd ~/workdir/github/DAW-DEV && ./bin/main
+# Absolute or relative path to your project directory
+PROJECT_DIR=/home/gsmuga3/workdir/github/DAW-DEV
+EXECUTABLE=./bin/main
+
+cd "$PROJECT_DIR" || { echo "Failed to cd to $PROJECT_DIR"; exit 1; }
+
+# Run in a loop forever
+while true; do
+    echo "Starting $EXECUTABLE..."
+    $EXECUTABLE
+
+    #echo ""
+    echo "Process exited with status $?. Restarting in 2 seconds..."
+    sleep 2
+done
 
