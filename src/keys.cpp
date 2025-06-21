@@ -54,7 +54,7 @@ static uint16_t read_data() {
 }
 
 static uint8_t get_bit(uint16_t data, uint8_t bit) {
-    return ((data & ((uint16_t)0b1 << bit)) >> bit);
+    return (data >> bit) & 0b1;
 }
 
 uint8_t init_keys() {
