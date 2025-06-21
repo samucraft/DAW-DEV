@@ -9,8 +9,6 @@
 #define SAMPLE_RATE 44100
 #define FRAMES_PER_BUFFER 256
 
-#define MAX_TONES 5
-
 #define KICK_SAMPLE_PATH   "sounds/kick.wav"
 #define SNARE_SAMPLE_PATH  "sounds/snare.wav"
 #define HI_HAT_SAMPLE_PATH "sounds/hi-hat.wav"
@@ -25,16 +23,37 @@ typedef struct {
     float phase3;
     float phase4;
     float phase5;
+    float phase6;
+    float phase7;
+    float phase8;
+    float phase9;
+    float phase10;
+    float phase11;
+    float phase12;
     float frequency1;
     float frequency2;
     float frequency3;
     float frequency4;
     float frequency5;
+    float frequency6;
+    float frequency7;
+    float frequency8;
+    float frequency9;
+    float frequency10;
+    float frequency11;
+    float frequency12;
     float amplitude1;
     float amplitude2;
     float amplitude3;
     float amplitude4;
     float amplitude5;
+    float amplitude6;
+    float amplitude7;
+    float amplitude8;
+    float amplitude9;
+    float amplitude10;
+    float amplitude11;
+    float amplitude12;
     volatile float vibratoPhase;
     volatile uint8_t repetitions_left;
 } Wave;
@@ -45,16 +64,37 @@ static Wave data = {
     .phase3 = 0.0f,
     .phase4 = 0.0f,
     .phase5 = 0.0f,
+    .phase6 = 0.0f,
+    .phase7 = 0.0f,
+    .phase8 = 0.0f,
+    .phase9 = 0.0f,
+    .phase10 = 0.0f,
+    .phase11 = 0.0f,
+    .phase12 = 0.0f,
     .frequency1 = 261.63f,
-    .frequency2 = 329.63f,
-    .frequency3 = 392.00f,
-    .frequency4 = 493.88f,
-    .frequency5 = 523.26f,
+    .frequency2 = 277.18f,
+    .frequency3 = 293.66f,
+    .frequency4 = 311.13f,
+    .frequency5 = 329.63f,
+    .frequency6 = 349.23f,
+    .frequency7 = 369.99f,
+    .frequency8 = 392.00f,
+    .frequency9 = 415.30f,
+    .frequency10 = 440.00f,
+    .frequency11 = 466.16f,
+    .frequency12 = 493.88f,
     .amplitude1 = 0.25f,
     .amplitude2 = 0.25f,
     .amplitude3 = 0.25f,
     .amplitude4 = 0.25f,
     .amplitude5 = 0.25f,
+    .amplitude6 = 0.25f,
+    .amplitude7 = 0.25f,
+    .amplitude8 = 0.25f,
+    .amplitude9 = 0.25f,
+    .amplitude10 = 0.25f,
+    .amplitude11 = 0.25f,
+    .amplitude12 = 0.25f,
     .vibratoPhase = 0.0f,
     .repetitions_left = 0
 };

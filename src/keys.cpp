@@ -23,23 +23,22 @@
 #define GPIOA           0x12
 #define GPIOB           0x13
 
-#define GPIOA_PORTS 5
-#define GPIOB_PORTS 0
+#define MAX_KEYS 12
 
 static key keys[] = {
     // Need updates
-    {"K1", 0, 0b1},  // C     - Do
-    {"K2", 1, 0b1},  // C#/Db - Do sos. / Re bemol
-    {"K3", 2, 0b1},  // D     - Re
-    {"K4", 3, 0b1},  // D#/Eb - Do sos. / Mi bemol
-    {"K5", 4, 0b1},  // E     - Mi
-    // {"F" , 7 }, // F     - Fa
-    // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
-    // {"G" , 7 }, // G     - Sol
-    // {"G#", 7 }, // G#/Ab - Sol sos. / La bemol
-    // {"A" , 7 }, // A     - La
-    // {"A#", 7 }, // A#/Bb - La sos. / Si bemol
-    // {"B" , 7 } // B     - Si
+    {"K1" , 0 , 0b1},  // C     - Do
+    {"K2" , 1 , 0b1},  // C#/Db - Do sos. / Re bemol
+    {"K3" , 2 , 0b1},  // D     - Re
+    {"K4" , 3 , 0b1},  // D#/Eb - Do sos. / Mi bemol
+    {"K5" , 4 , 0b1},  // E     - Mi
+    {"K6" , 5 , 0b1}, // F     - Fa
+    {"K7" , 6 , 0b1}, // F#/Gb - Fa sos. / Sol bemol
+    {"K8" , 7 , 0b1}, // G     - Sol
+    {"K9" , 8 , 0b1}, // G#/Ab - Sol sos. / La bemol
+    {"K10", 9 , 0b1}, // A     - La
+    {"K11", 10 , 0b1}, // A#/Bb - La sos. / Si bemol
+    {"K12", 11 , 0b1} // B     - Si
 };
 
 static int fd;
@@ -48,8 +47,14 @@ static void write_config(uint8_t reg, uint8_t value) {
     wiringPiI2CWriteReg8(fd, reg, value);
 }
 
-static uint8_t read_port(uint8_t port) {
-    return wiringPiI2CReadReg8(fd, port);
+static uint16_t read_data() {
+    uint16_t gpioa_data = wiringPiI2CReadReg8(fd, GPIOA);
+    uint16_t gpiob_data = wiringPiI2CReadReg8(fd, GPIOB);
+    return (gpioa_data | (gpiob_data << 8));
+}
+
+static uint8_t get_bit(uint16_t data, uint8_t bit) {
+    return ((data & ((uint16_t)0b1 << bit)) >> bit);
 }
 
 uint8_t init_keys() {
@@ -74,10 +79,10 @@ uint8_t init_keys() {
 
 void loop_keys() {
     uint8_t curr_state;
+    uint8_t data = read_data();
 
-    uint8_t value = read_port(GPIOA);
-    for (size_t i = 0; i < GPIOA_PORTS; i++) {
-        curr_state = value & 0b1;
+    for (size_t i = 0; i < MAX_KEYS; i++) {
+        curr_state = get_bit(data, keys[i].pin);
         if (curr_state != keys[i].state) {
             keys[i].state = curr_state;
             std::cout << "Key " << keys[i].name << " changed to "
@@ -85,7 +90,5 @@ void loop_keys() {
             
             trigger_gate(i);
         }
-
-        value >>= 1;
     }
 }
