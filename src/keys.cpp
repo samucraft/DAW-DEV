@@ -79,15 +79,14 @@ uint8_t init_keys() {
 
 void loop_keys() {
     uint8_t curr_state;
-    uint8_t data = read_data();
+    uint16_t data = read_data();
 
     for (size_t i = 0; i < MAX_KEYS; i++) {
         curr_state = get_bit(data, keys[i].pin);
         if (curr_state != keys[i].state) {
             keys[i].state = curr_state;
             std::cout << "Key " << keys[i].name << " changed to "
-                      << static_cast<int>(curr_state) <<"!, from \n"
-                      << std::hex << data;
+                      << static_cast<int>(curr_state) <<"!\n";
             
             trigger_gate(i);
         }
