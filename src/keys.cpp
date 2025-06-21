@@ -1,21 +1,38 @@
 #include <cstdint>
 #include <iostream>
 #include <wiringPi.h>
+#include <wiringPiI2C.h>
 
 #include "keys.hpp"
 #include "sound.hpp"
 
-// Defines the max number of keys to load
-#define MAX_KEYS 5
-// #define MAX_KEYS 12
+// Error codes
+#define KEY_SUCCESS 0
+#define KEY_WIP_INI 1
+
+// Register map
+#define MCP23017_ADDR   0x20
+#define IODIRA          0x00
+    #define IODIRA0_7       0x1F
+#define IODIRB          0x01
+    #define IODIRB0_7       0x00
+#define GPPUA           0x0C
+    #define GPPUA0_7        0x1F
+#define GPPUB           0x0D
+    #define GPPUB0_7        0x00
+#define GPIOA           0x12
+#define GPIOB           0x13
+
+#define GPIOA_PORTS 5
+#define GPIOB_PORTS 0
 
 static key keys[] = {
     // Need updates
-    {"C4", 4 }, // C     - Do
-    {"E4", 5 }, // C#/Db - Do sos. / Re bemol
-    {"G4", 21}, // D     - Re
-    {"B4", 22}, // D#/Eb - Do sos. / Mi bemol
-    {"C5", 23}, // E     - Mi
+    {"K1", 0},  // C     - Do
+    {"K2", 1},  // C#/Db - Do sos. / Re bemol
+    {"K3", 2},  // D     - Re
+    {"K4", 3},  // D#/Eb - Do sos. / Mi bemol
+    {"K5", 4},  // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol
@@ -25,51 +42,50 @@ static key keys[] = {
     // {"B" , 7 } // B     - Si
 };
 
-// Update internal key state
-void update_key(key *key, uint8_t state);
+static int fd;
+
+static void write_config(uint8_t reg, uint8_t value) {
+    wiringPiI2CWriteReg8(fd, reg, value);
+}
+
+static uint8_t read_port(uint8_t port) {
+    return wiringPiI2CReadReg8(fd, port);
+}
 
 uint8_t init_keys() {
     std::cout << "- Keys initialization ...\n";
 
     std::cout << "  * initializing WiringPi module ...\n";
-    if (wiringPiSetup()) {
+    fd = wiringPiI2CSetup(MCP23017_ADDR);
+    if (fd < 0) {
         std::cout << " Failed with code : \n" << KEY_WIP_INI;
         return KEY_WIP_INI;
     }
 
     std::cout << "  * initializing keys ...\n";
-    for (size_t i = 0; i < MAX_KEYS; i++) {
-        pinMode(keys[i].pin, OUTPUT);
-        set_key(&keys[i], KEY_UNPRESSED);
-    }
+    write_config(IODIRA, IODIRA0_7);
+    write_config(IODIRB, IODIRB0_7);
+    write_config(GPPUA, GPPUA0_7);
+    write_config(GPPUB, GPPUB0_7);
 
     std::cout << " Success!\n";
     return KEY_SUCCESS;
 }
 
-void set_key(key *key, uint8_t state) {
-    update_key(key, state);
-    digitalWrite(key->pin, state);
-}
-
-uint8_t get_key(key *key) {
-    return digitalRead(key->pin);
-}
-
 void loop_keys() {
-    uint8_t tmp_state;
-    for (size_t i = 0; i < MAX_KEYS; i++) {
-        tmp_state = get_key(&keys[i]);
-        if (tmp_state != keys[i].state) {
-            update_key(&keys[i], tmp_state);
+    uint8_t curr_state;
+
+    uint8_t value = read_port(GPIOA);
+    for (size_t i = 0; i < GPIOA_PORTS; i++) {
+        curr_state = value & 0b1;
+        if (curr_state != keys[i].state) {
+            keys[i].state = curr_state;
             std::cout << "Key " << keys[i].name << " changed to "
-                      << static_cast<int>(tmp_state) <<"!\n";
+                      << static_cast<int>(curr_state) <<"!\n";
             
             trigger_gate(i);
         }
-    }
-}
 
-void update_key(key *key, uint8_t state) {
-    key->state = state;
+        value >>= 1;
+    }
 }

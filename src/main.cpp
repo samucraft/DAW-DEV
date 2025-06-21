@@ -22,8 +22,8 @@ int main() {
 
     while (true) {
         loop_keys();
-        loop_touch();
-        loop_accel();
+        // loop_touch();
+        // loop_accel();
     }
 
     cleanup_sound();
