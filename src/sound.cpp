@@ -101,7 +101,11 @@ static Wave data = {
 
 static PaStream *stream;
 
-static bool gates[] = {false, false, false, false, false};
+static bool gates[] = {
+    false, false, false, false,
+    false, false, false, false,
+    false, false, false, false
+};
 
 struct Sample {
     float* data;       // Interleaved stereo or mono
@@ -151,6 +155,13 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     float phase3 = data->phase3;
     float phase4 = data->phase4;
     float phase5 = data->phase5;
+    float phase6 = data->phase6;
+    float phase7 = data->phase7;
+    float phase8 = data->phase8;
+    float phase9 = data->phase9;
+    float phase10 = data->phase10;
+    float phase11 = data->phase11;
+    float phase12 = data->phase12;
     float vibratoPhase = data->vibratoPhase;
 
     for (unsigned int i = 0; i < framesPerBuffer; i++) {
@@ -163,6 +174,13 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
         float current_frequency3 = data->frequency3 + vibratoMod;
         float current_frequency4 = data->frequency4 + vibratoMod;
         float current_frequency5 = data->frequency5 + vibratoMod;
+        float current_frequency6 = data->frequency6 + vibratoMod;
+        float current_frequency7 = data->frequency7 + vibratoMod;
+        float current_frequency8 = data->frequency8 + vibratoMod;
+        float current_frequency9 = data->frequency9 + vibratoMod;
+        float current_frequency10 = data->frequency10 + vibratoMod;
+        float current_frequency11 = data->frequency11 + vibratoMod;
+        float current_frequency12 = data->frequency12 + vibratoMod;
 
         // Mix sample playback (kick) if active
         float left_kick_sample  = 0.0f;
@@ -204,14 +222,27 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
             }
         }
         
-        float sample1 = gates[0] ? data->amplitude1 * sinf(phase1) : 0.0f;
-        float sample2 = gates[1] ? data->amplitude2 * sinf(phase2) : 0.0f;
-        float sample3 = gates[2] ? data->amplitude3 * sinf(phase3) : 0.0f;
-        float sample4 = gates[3] ? data->amplitude4 * sinf(phase4) : 0.0f;
-        float sample5 = gates[4] ? data->amplitude5 * sinf(phase5) : 0.0f;
+        float sample1  = gates[0]  ? data->amplitude1 * sinf(phase1)  : 0.0f;
+        float sample2  = gates[1]  ? data->amplitude2 * sinf(phase2)  : 0.0f;
+        float sample3  = gates[2]  ? data->amplitude3 * sinf(phase3)  : 0.0f;
+        float sample4  = gates[3]  ? data->amplitude4 * sinf(phase4)  : 0.0f;
+        float sample5  = gates[4]  ? data->amplitude5 * sinf(phase5)  : 0.0f;
+        float sample6  = gates[5]  ? data->amplitude5 * sinf(phase6)  : 0.0f;
+        float sample7  = gates[6]  ? data->amplitude5 * sinf(phase7)  : 0.0f;
+        float sample8  = gates[7]  ? data->amplitude5 * sinf(phase8)  : 0.0f;
+        float sample9  = gates[8]  ? data->amplitude5 * sinf(phase9)  : 0.0f;
+        float sample10 = gates[9]  ? data->amplitude5 * sinf(phase10) : 0.0f;
+        float sample11 = gates[10] ? data->amplitude5 * sinf(phase11) : 0.0f;
+        float sample12 = gates[11] ? data->amplitude5 * sinf(phase12) : 0.0f;
 
-        *out++ = sample1 + sample2 + sample3 + sample4 + sample5 + left_kick_sample + left_snare_sample + left_hi_hat_sample;   // Left
-        *out++ = sample1 + sample2 + sample3 + sample4 + sample5 + right_kick_sample + right_snare_sample + right_hi_hat_sample;// Right
+        *out++ = sample1 + sample2 + sample3 + sample4
+                 + sample5 + sample6 + sample7 + sample8
+                 + sample9 + sample10 + sample11 + sample12
+                 + left_kick_sample + left_snare_sample + left_hi_hat_sample;   // Left
+        *out++ = sample1 + sample2 + sample3 + sample4
+                 + sample5 + sample6 + sample7 + sample8
+                 + sample9 + sample10 + sample11 + sample12
+                 + right_kick_sample + right_snare_sample + right_hi_hat_sample;// Right
         
         phase1 += 2.0f * (float)M_PI * current_frequency1 / SAMPLE_RATE;
         if (phase1 >= 2.0f * (float)M_PI)
@@ -233,6 +264,34 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
         if (phase5 >= 2.0f * (float)M_PI)
             phase5 -= 2.0f * (float)M_PI;
 
+        phase6 += 2.0f * (float)M_PI * current_frequency6 / SAMPLE_RATE;
+        if (phase6 >= 2.0f * (float)M_PI)
+            phase6 -= 2.0f * (float)M_PI;
+
+        phase7 += 2.0f * (float)M_PI * current_frequency7 / SAMPLE_RATE;
+        if (phase7 >= 2.0f * (float)M_PI)
+            phase7 -= 2.0f * (float)M_PI;
+
+        phase8 += 2.0f * (float)M_PI * current_frequency8 / SAMPLE_RATE;
+        if (phase8 >= 2.0f * (float)M_PI)
+            phase8 -= 2.0f * (float)M_PI;
+
+        phase9 += 2.0f * (float)M_PI * current_frequency9 / SAMPLE_RATE;
+        if (phase9 >= 2.0f * (float)M_PI)
+            phase9 -= 2.0f * (float)M_PI;
+
+        phase10 += 2.0f * (float)M_PI * current_frequency10 / SAMPLE_RATE;
+        if (phase10 >= 2.0f * (float)M_PI)
+            phase10 -= 2.0f * (float)M_PI;
+
+        phase11 += 2.0f * (float)M_PI * current_frequency11 / SAMPLE_RATE;
+        if (phase11 >= 2.0f * (float)M_PI)
+            phase11 -= 2.0f * (float)M_PI;
+
+        phase12 += 2.0f * (float)M_PI * current_frequency12 / SAMPLE_RATE;
+        if (phase12 >= 2.0f * (float)M_PI)
+            phase12 -= 2.0f * (float)M_PI;
+
         vibratoPhase += 2.0f * (float)M_PI * VIBRATO_FREQUENCY / SAMPLE_RATE;
         if (vibratoPhase >= 2.0f * (float)M_PI)
             vibratoPhase -= 2.0f * (float)M_PI;
@@ -243,6 +302,13 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
     data->phase3 = phase3;
     data->phase4 = phase4;
     data->phase5 = phase5;
+    data->phase6 = phase6;
+    data->phase7 = phase7;
+    data->phase8 = phase8;
+    data->phase9 = phase9;
+    data->phase10 = phase10;
+    data->phase11 = phase11;
+    data->phase12 = phase12;
 
     data->vibratoPhase = vibratoPhase;
 
