@@ -86,7 +86,8 @@ void loop_keys() {
         if (curr_state != keys[i].state) {
             keys[i].state = curr_state;
             std::cout << "Key " << keys[i].name << " changed to "
-                      << static_cast<int>(curr_state) <<"!\n";
+                      << static_cast<int>(curr_state) <<"!, from \n"
+                      << std::hex << data;
             
             trigger_gate(i);
         }
