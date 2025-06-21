@@ -13,13 +13,13 @@
 // Register map
 #define MCP23017_ADDR   0x20
 #define IODIRA          0x00
-    #define IODIRA0_7       0x1F
+    #define IODIRA0_7       0xFF
 #define IODIRB          0x01
-    #define IODIRB0_7       0x00
+    #define IODIRB0_7       0x0F
 #define GPPUA           0x0C
-    #define GPPUA0_7        0x1F
+    #define GPPUA0_7        0xFF
 #define GPPUB           0x0D
-    #define GPPUB0_7        0x00
+    #define GPPUB0_7        0x0F
 #define GPIOA           0x12
 #define GPIOB           0x13
 
@@ -27,18 +27,18 @@
 
 static key keys[] = {
     // Need updates
-    {"K1" , 0 , 0b1},  // C     - Do
-    {"K2" , 1 , 0b1},  // C#/Db - Do sos. / Re bemol
-    {"K3" , 2 , 0b1},  // D     - Re
-    {"K4" , 3 , 0b1},  // D#/Eb - Do sos. / Mi bemol
+    {"K1" , 0 , 0b1}, // C     - Do
+    {"K2" , 1 , 0b1}, // C#/Db - Do sos. / Re bemol
+    {"K3" , 2 , 0b1}, // D     - Re
+    {"K4" , 3 , 0b1}, // D#/Eb - Do sos. / Mi bemol
     {"K5" , 4 , 0b1},  // E     - Mi
     {"K6" , 5 , 0b1}, // F     - Fa
     {"K7" , 6 , 0b1}, // F#/Gb - Fa sos. / Sol bemol
     {"K8" , 7 , 0b1}, // G     - Sol
     {"K9" , 8 , 0b1}, // G#/Ab - Sol sos. / La bemol
     {"K10", 9 , 0b1}, // A     - La
-    {"K11", 10 , 0b1}, // A#/Bb - La sos. / Si bemol
-    {"K12", 11 , 0b1} // B     - Si
+    {"K11", 10, 0b1}, // A#/Bb - La sos. / Si bemol
+    {"K12", 11, 0b1}  // B     - Si
 };
 
 static int fd;
