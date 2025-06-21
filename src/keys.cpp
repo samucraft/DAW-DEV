@@ -28,11 +28,11 @@
 
 static key keys[] = {
     // Need updates
-    {"K1", 0},  // C     - Do
-    {"K2", 1},  // C#/Db - Do sos. / Re bemol
-    {"K3", 2},  // D     - Re
-    {"K4", 3},  // D#/Eb - Do sos. / Mi bemol
-    {"K5", 4},  // E     - Mi
+    {"K1", 0, 0b1},  // C     - Do
+    {"K2", 1, 0b1},  // C#/Db - Do sos. / Re bemol
+    {"K3", 2, 0b1},  // D     - Re
+    {"K4", 3, 0b1},  // D#/Eb - Do sos. / Mi bemol
+    {"K5", 4, 0b1},  // E     - Mi
     // {"F" , 7 }, // F     - Fa
     // {"F#", 7 }, // F#/Gb - Fa sos. / Sol bemol
     // {"G" , 7 }, // G     - Sol
