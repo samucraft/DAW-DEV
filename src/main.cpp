@@ -14,8 +14,8 @@ int main() {
 
     RET_IF_ERR(init_keys());
     RET_IF_ERR(init_sound());
-    init_touch();
-    init_accel();
+    // init_touch();
+    // init_accel();
 
     // Register the signal handler for SIGINT
     std::signal(SIGINT, signalHandler);
