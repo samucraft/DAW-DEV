@@ -23,10 +23,15 @@
 // Volume is connected to AIN0 -> 0b00[0] -> 0b[0]00 (after odd fix)
 #define ANALOG_VOLUME_CTRL 0x80
 
+// Reverb is connected to AIN1 -> 0b00[1] -> 0b[1]00 (after odd fix)
+#define ANALOG_REVERB_CTRL 0xC0
+
 #define MAX_ANALOG_VALUE_INT 255
 #define MAX_ANALOG_VALUE_FLT 255.0f
 
 static int analog_fd;
+
+static bool reverb_status;
 
 static uint8_t read_analog(uint8_t control_byte, uint8_t *value){
     // Write control byte
@@ -60,12 +65,16 @@ uint8_t init_analog() {
         std::cerr << "Failed to init I2C communication to ADS7830" << std::endl;
         return ANALOG_INITERR;
     }
+
+    reverb_status = false;
+
     return ANALOG_SUCCESS;
 }
 
 void loop_analog() {
+    uint8_t volume, reverb;
+
     // Volume control
-    uint8_t volume;
     if (read_analog(ANALOG_VOLUME_CTRL, &volume) != ANALOG_SUCCESS) {
         std::cerr << "Failed to read volume value" << std::endl;
     } else {
@@ -75,5 +84,18 @@ void loop_analog() {
          */
         volume = invert_value(volume);
         set_volume(normalize_value(volume));
+    }
+
+    // Reverb control
+    if (read_analog(ANALOG_REVERB_CTRL, &reverb) != ANALOG_SUCCESS) {
+        std::cerr << "Failed to read reverb value" << std::endl;
+    } else {
+        bool new_reverb = normalize_value(invert_value(reverb)) > 0.5f
+                          ? true : false;
+        if (new_reverb != reverb_status) {
+            reverb_status = new_reverb;
+            std::cout << "Reverb is now set to "
+                      << static_cast<uint8_t>(reverb_status) << std::endl;
+        }
     }
 }
