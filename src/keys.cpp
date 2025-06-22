@@ -82,14 +82,21 @@ void loop_keys() {
     uint8_t curr_state;
     uint16_t data = read_data();
 
+    bool state_changed = false;
     for (size_t i = 0; i < MAX_KEYS; i++) {
         curr_state = get_bit(data, keys[i].pin);
         if (curr_state != keys[i].state) {
+            state_changed = true;
+
             keys[i].state = curr_state;
             std::cout << "Key " << keys[i].name << " changed to "
                       << static_cast<int>(curr_state) <<"!\n";
             
             trigger_gate(i);
         }
+    }
+
+    if (state_changed) {
+        set_chord();
     }
 }
