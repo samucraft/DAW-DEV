@@ -77,47 +77,47 @@ static STREAM_DATA stream_data = {
             {DEFAULT_AMPLITUDE, C_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, Db_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, D_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, Eb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, E_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, F_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, Gb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, G_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, Ab_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, A_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, Bb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, B_FREQ, DEFAULT_PHASE},
             {{}, 0}
         }
@@ -208,7 +208,7 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                 float first = data->signals[i].ks.buffer[data->signals[i].ks.index];
                 float next  = data->signals[i].ks.buffer[(data->signals[i].ks.index + 1)
                               % data->signals[i].ks.buffer.size()];
-                float new_sample = KS_DECAY * 0.5f * (first + next);
+                float new_sample = KS_DECAY * 0.25f * (first + next);
 
                 data->signals[i].ks.buffer[data->signals[i].ks.index] = new_sample;
                 float sample = new_sample;
