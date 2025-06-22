@@ -38,6 +38,8 @@
 // For Karplus-Strong
 #define KS_DECAY    0.996f // Damping factor
 
+#define MAX_VOLUME 1.0f
+
 typedef struct wave {
     float amplitude;
     float frequency;
@@ -64,6 +66,7 @@ typedef struct vibrato {
 typedef struct stream_data {
     SIGNAL           signals[MAX_KEYS];
     volatile VIBRATO vibrato;
+    volatile float   volume;
 } STREAM_DATA;
 
 static STREAM_DATA stream_data = {
@@ -117,7 +120,8 @@ static STREAM_DATA stream_data = {
             {{}, 0}
         }
     },
-    {DEFAULT_PHASE, 0}
+    {DEFAULT_PHASE, 0},
+    MAX_VOLUME
 };
 
 static PaStream *stream;
@@ -180,8 +184,8 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
 
             // Generate wave (sine wave is the only one supported at the moment)
             float sample = data->signals[i].gate
-                            ? data->signals[i].wave.amplitude
-                            * sinf(data->signals[i].wave.phase)
+                            ? data->volume * data->signals[i].wave.amplitude
+                              * sinf(data->signals[i].wave.phase)
                             : 0.0f;
             
             // Save the sample for this signal into left and right full sample
@@ -206,7 +210,7 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                 float new_sample = KS_DECAY * 0.5f * (first + next);
 
                 data->signals[i].ks.buffer[data->signals[i].ks.index] = new_sample;
-                float sample = new_sample;
+                float sample = data->volume * new_sample;
 
                 data->signals[i].ks.index = (data->signals[i].ks.index + 1) % data->signals[i].ks.buffer.size();
 
@@ -467,4 +471,8 @@ void change_sound_type(SIGNAL_TYPE type) {
     for (size_t i = 0; i < MAX_KEYS; i++) {
         stream_data.signals[i].type = type;
     }
+}
+
+void set_volume(float volume) {
+    stream_data.volume = volume;
 }

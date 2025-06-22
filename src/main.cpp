@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "accel.hpp"
+#include "analog.hpp"
 #include "cam.hpp"
 #include "disp.hpp"
 #include "keys.hpp"
@@ -19,6 +20,7 @@ int main() {
     RET_IF_ERR(init_sound());
     RET_IF_ERR(init_disp());
     RET_IF_ERR(init_led());
+    RET_IF_ERR(init_analog());
     // init_touch();
     // init_accel();
     init_cam();
@@ -30,6 +32,7 @@ int main() {
         loop_keys();
         // loop_touch();
         // loop_accel();
+        loop_analog();
 
         cam_check_gesture();
     }

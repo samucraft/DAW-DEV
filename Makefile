@@ -26,6 +26,7 @@ DISP_SRC = $(SRC_DIR)/disp.cpp
 THEORY_SRC = $(SRC_DIR)/theory.cpp
 CAM_SRC = $(SRC_DIR)/cam.cpp
 LED_SRC = $(SRC_DIR)/led.cpp
+ANALOG_SRC = $(SRC_DIR)/analog.cpp
 
 # Objects
 OBJ = $(OBJ_DIR)/main.o
@@ -38,6 +39,7 @@ DISP_OBJ = $(OBJ_DIR)/disp.o
 THEORY_OBJ = $(OBJ_DIR)/theory.o
 CAM_OBJ = $(OBJ_DIR)/cam.o
 LED_OBJ = $(OBJ_DIR)/led.o
+ANALOG_OBJ = $(OBJ_DIR)/analog.o
 
 CXXFLAGS += -I$(INC_DIR)
 
@@ -53,9 +55,9 @@ LIBS = $(WIP_LIB) $(PA_LIB) $(SND_LIB) $(LED_LIB)
 all: $(TARGET)
 
 # Link object files to create executable
-$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ)
+$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(ANALOG_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(LIBS) $(LED_LIB_PATH)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(ANALOG_OBJ) $(LIBS) $(LED_LIB_PATH)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
@@ -106,6 +108,11 @@ $(CAM_OBJ): $(CAM_SRC)
 $(LED_OBJ): $(LED_SRC)
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $(LED_SRC) -o $(LED_OBJ) $(LED_LIB_PATH)
+
+# Compile analog potentiometers module
+$(ANALOG_OBJ): $(ANALOG_SRC)
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $(ANALOG_SRC) -o $(ANALOG_OBJ)
 
 # Clean up build files
 clean:

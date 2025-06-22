@@ -18,4 +18,6 @@ void trigger_vibrato();
 
 void change_sound_type(SIGNAL_TYPE type);
 
+void set_volume(float volume);
+
 #endif
