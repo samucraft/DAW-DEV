@@ -38,11 +38,6 @@
 // For Karplus-Strong
 #define KS_DECAY    0.996f // Damping factor
 
-enum signal_type {
-    WAVE_e = 0,
-    KS_e   = 1,
-};
-
 typedef struct wave {
     float amplitude;
     float frequency;
@@ -55,10 +50,10 @@ typedef struct ks {
 } KS;
 
 typedef struct signal {
-    bool             gate;
-    enum signal_type type;
-    WAVE             wave;
-    KS               ks;
+    bool        gate;
+    SIGNAL_TYPE type;
+    WAVE        wave;
+    KS          ks;
 } SIGNAL;
 
 typedef struct vibrato {
@@ -73,51 +68,51 @@ typedef struct stream_data {
 
 static STREAM_DATA stream_data = {
     {
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, C_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, Db_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, D_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, Eb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, E_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, F_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, Gb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, G_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, Ab_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, A_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, Bb_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
-        {false, KS_e,
+        {false, WAVE_e,
             {DEFAULT_AMPLITUDE, B_FREQ, DEFAULT_PHASE},
             {{}, 0}
         }
@@ -466,4 +461,10 @@ void trigger_vibrato() {
     vibrato = true;
     stream_data.vibrato.repetitions_left = MAX_VIBRATO_WINDOWS;
     std::cout << "Vibrato started\n";
+}
+
+void change_sound_type(SIGNAL_TYPE type) {
+    for (size_t i = 0; i < MAX_KEYS; i++) {
+        stream_data.signals[i].type = type;
+    }
 }

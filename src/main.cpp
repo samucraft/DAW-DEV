@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "accel.hpp"
+#include "cam.hpp"
 #include "disp.hpp"
 #include "keys.hpp"
 #include "signal.hpp"
@@ -18,6 +19,7 @@ int main() {
     RET_IF_ERR(init_disp());
     // init_touch();
     // init_accel();
+    init_cam();
 
     // Register the signal handler for SIGINT
     std::signal(SIGINT, signalHandler);
@@ -26,6 +28,8 @@ int main() {
         loop_keys();
         // loop_touch();
         // loop_accel();
+
+        cam_check_gesture();
     }
 
     cleanup_sound();
