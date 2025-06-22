@@ -208,7 +208,7 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                 float first = data->signals[i].ks.buffer[data->signals[i].ks.index];
                 float next  = data->signals[i].ks.buffer[(data->signals[i].ks.index + 1)
                               % data->signals[i].ks.buffer.size()];
-                float new_sample = KS_DECAY * 0.25f * (first + next);
+                float new_sample = KS_DECAY * 0.5f * (first + next);
 
                 data->signals[i].ks.buffer[data->signals[i].ks.index] = new_sample;
                 float sample = new_sample;
