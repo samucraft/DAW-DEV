@@ -25,7 +25,7 @@ def detect_gesture(frame):
     contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     if contours:
         cnt = max(contours, key=cv2.contourArea)
-        if cv2.contourArea(cnt) > 1000:
+        if cv2.contourArea(cnt) > 5000:
             finger_count = count_fingers(cnt)
             if finger_count <= 1:
                 return "Closed Fist"
