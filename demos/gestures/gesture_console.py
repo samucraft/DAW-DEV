@@ -1,10 +1,10 @@
-import cv2
+from picamera2 import Picamera2
 import numpy as np
+import cv2
+import time
 import signal
 import sys
-import time
 
-# Flag to allow clean shutdown
 running = True
 
 def signal_handler(sig, frame):
@@ -13,32 +13,23 @@ def signal_handler(sig, frame):
     print("\nExiting...")
     sys.exit(0)
 
-# Handle Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
-# Start capturing from the CSI or USB camera
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("Error: Could not open video device.")
-    sys.exit(1)
+picam2 = Picamera2()
+picam2.configure(picam2.create_preview_configuration(main={"format": 'BGR888', "size": (640, 480)}))
+picam2.start()
+time.sleep(2)  # Let the camera warm up
 
 print("Starting hand gesture detection (press Ctrl+C to stop)...")
 
 while running:
-    ret, frame = cap.read()
-    if not ret:
-        print("Error: Failed to grab frame.")
-        break
-
+    frame = picam2.capture_array()
     frame = cv2.flip(frame, 1)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # Skin color range for HSV
     lower = np.array([0, 30, 60], dtype=np.uint8)
     upper = np.array([20, 150, 255], dtype=np.uint8)
     mask = cv2.inRange(hsv, lower, upper)
-
-    # Clean the mask
     mask = cv2.GaussianBlur(mask, (5, 5), 0)
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -70,6 +61,4 @@ while running:
                     gesture = "Closed Fist"
 
     print(f"Detected Gesture: {gesture}")
-    time.sleep(0.5)  # Reduce CPU load and improve readability
-
-cap.release()
+    time.sleep(0.5)
