@@ -4,6 +4,7 @@
 #include <string>
 #include <sys/file.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "sound.hpp"
 
@@ -28,6 +29,8 @@ static char read_fifo_gesture() {
 
     char buffer[4];
     read(fd, buffer, sizeof(buffer) - 1);
+    std::cout << "|" << buffer << "|" << std::endl;
+    usleep(500000);
 
     flock(fd, LOCK_UN);  // unlock
     close(fd);
