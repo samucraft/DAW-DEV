@@ -24,22 +24,20 @@
 #define GPIOA           0x12
 #define GPIOB           0x13
 
-#define MAX_KEYS 12
-
 static key keys[] = {
     // Need updates
-    {"K1" , 0 , 0b1}, // C     - Do
-    {"K2" , 1 , 0b1}, // C#/Db - Do sos. / Re bemol
-    {"K3" , 2 , 0b1}, // D     - Re
-    {"K4" , 3 , 0b1}, // D#/Eb - Do sos. / Mi bemol
-    {"K5" , 4 , 0b1},  // E     - Mi
-    {"K6" , 5 , 0b1}, // F     - Fa
-    {"K7" , 6 , 0b1}, // F#/Gb - Fa sos. / Sol bemol
-    {"K8" , 7 , 0b1}, // G     - Sol
-    {"K9" , 8 , 0b1}, // G#/Ab - Sol sos. / La bemol
-    {"K10", 9 , 0b1}, // A     - La
-    {"K11", 10, 0b1}, // A#/Bb - La sos. / Si bemol
-    {"K12", 11, 0b1}  // B     - Si
+    {"C" , 0b1}, // C     - Do
+    {"C#", 0b1}, // C#/Db - Do sos. / Re bemol
+    {"D" , 0b1}, // D     - Re
+    {"D#", 0b1}, // D#/Eb - Do sos. / Mi bemol
+    {"E" , 0b1}, // E     - Mi
+    {"F" , 0b1}, // F     - Fa
+    {"F#", 0b1}, // F#/Gb - Fa sos. / Sol bemol
+    {"G" , 0b1}, // G     - Sol
+    {"G#", 0b1}, // G#/Ab - Sol sos. / La bemol
+    {"A" , 0b1}, // A     - La
+    {"A#", 0b1}, // A#/Bb - La sos. / Si bemol
+    {"B" , 0b1}  // B     - Si
 };
 
 static int fd;
@@ -84,7 +82,7 @@ void loop_keys() {
 
     bool state_changed = false;
     for (size_t i = 0; i < MAX_KEYS; i++) {
-        curr_state = get_bit(data, keys[i].pin);
+        curr_state = get_bit(data, i);
         if (curr_state != keys[i].state) {
             state_changed = true;
 
