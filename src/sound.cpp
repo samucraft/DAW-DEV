@@ -202,7 +202,7 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
         }
 
         // If Karplus-Strong synthesis:
-        if (data->signals[i].type == KS_e) {
+        else if (data->signals[i].type == KS_e) {
             if (data->signals[i].gate) {
                 // Apply Karplus-Strong feedback
                 float first = data->signals[i].ks.buffer[data->signals[i].ks.index];
