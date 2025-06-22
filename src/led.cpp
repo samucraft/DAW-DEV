@@ -13,6 +13,7 @@
 #define LED_BRIGHTNESS 3
 #define LED_COLOR      0xF4430D
 #define LED_COUNT      18
+    #define LED_DISP_CNT    6
 #define LED_PIN        18
 
 static ws2811_t ledstring =
@@ -63,8 +64,11 @@ uint8_t init_led() {
         return E_LED_FAIL;
     }
 
-    for (int i = 0; i < LED_COUNT; ++i) {
+    for (int i = 0; i < LED_DISP_CNT; ++i) {
         ledstring.channel[0].leds[i] = LED_COLOR;
+    }
+    for (int i = LED_DISP_CNT; i < LED_COUNT; ++i) {
+        ledstring.channel[0].leds[i] = 0x000000;
     }
     ws2811_render(&ledstring);
 
