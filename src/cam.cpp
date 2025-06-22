@@ -66,7 +66,7 @@ void cam_check_gesture() {
             break;
         
         default:
-            std::cout << "Error: Gesture (" << gesture << ") not valid!"
+            std::cerr << "Error: Gesture (" << gesture << ") not valid!"
                       << std::endl;
             break;
     }
