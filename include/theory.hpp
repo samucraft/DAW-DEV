@@ -3,6 +3,6 @@
 
 void init_theory();
 
-void update_music_state();
+void update_music_state(key keys[]);
 
 #endif

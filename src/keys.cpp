@@ -95,6 +95,6 @@ void loop_keys() {
     }
 
     if (state_changed) {
-        update_music_state();
+        update_music_state(keys);
     }
 }
