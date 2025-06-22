@@ -27,8 +27,9 @@ static char read_fifo_gesture() {
 
     flock(fd, LOCK_SH);  // shared lock
 
-    char buffer[4];
-    read(fd, buffer, sizeof(buffer) - 1);
+    char buffer[2];
+    read(fd, buffer, 1);
+    buffer[1] = '\0';
     std::cout << "|" << buffer << "|" << std::endl;
     usleep(500000);
 
