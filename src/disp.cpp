@@ -48,11 +48,7 @@ void cleanup_disp() {
     close(serial_port);
 }
 
-void set_chord() {
-    // Send command to Nextion to set t0 text
-    std::string chord = "t0.txt=\"Cm\"";
-    std::string composition = "t1.txt=\"C->D#\"";
-
+void set_chord(std::string chord, std::string composition) {
     send_command(chord);
     send_command(composition);
 }

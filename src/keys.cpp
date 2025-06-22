@@ -3,9 +3,9 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
-#include "disp.hpp"
 #include "keys.hpp"
 #include "sound.hpp"
+#include "theory.hpp"
 
 // Error codes
 #define KEY_SUCCESS 0
@@ -97,6 +97,6 @@ void loop_keys() {
     }
 
     if (state_changed) {
-        set_chord();
+        update_music_state();
     }
 }
