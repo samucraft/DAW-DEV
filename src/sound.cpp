@@ -3,6 +3,7 @@
 #include <math.h>
 #include <portaudio.h>
 #include <sndfile.h>
+#include <vector>
 
 #include "keys.hpp"
 #include "sound.hpp"
@@ -34,12 +35,32 @@
 #define Bb_FREQ 466.16f
 #define B_FREQ  493.88f
 
+// For Karplus-Strong
+#define KS_DURATION 2.0;    // seconds
+#define KS_DECAY    0.996f; // Damping factor
+
+enum signal_type {
+    WAVE_e = 0,
+    KS_e   = 1,
+};
+
 typedef struct wave {
     float amplitude;
     float frequency;
     float phase;
-    bool  gate;
 } WAVE;
+
+typedef struct ks {
+    std::vector<float> ks_buffer;
+    int                ks_index;
+} KS;
+
+typedef struct signal {
+    bool             gate;
+    enum signal_type type;
+    WAVE             wave;
+    KS               ks;
+} SIGNAL;
 
 typedef struct vibrato {
     volatile float   vibratoPhase;
@@ -47,24 +68,60 @@ typedef struct vibrato {
 } VIBRATO;
 
 typedef struct stream_data {
-    WAVE             waves[MAX_KEYS];
+    SIGNAL           signals[MAX_KEYS];
     volatile VIBRATO vibrato;
 } STREAM_DATA;
 
 static STREAM_DATA stream_data = {
     {
-        {DEFAULT_AMPLITUDE, C_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, Db_FREQ, DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, D_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, Eb_FREQ, DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, E_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, F_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, Gb_FREQ, DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, G_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, Ab_FREQ, DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, A_FREQ , DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, Bb_FREQ, DEFAULT_PHASE, false},
-        {DEFAULT_AMPLITUDE, B_FREQ , DEFAULT_PHASE, false}
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, C_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, Db_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, D_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, Eb_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, E_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, F_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, Gb_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, G_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, Ab_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, A_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, Bb_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        },
+        {false, WAVE_e,
+            {DEFAULT_AMPLITUDE, B_FREQ, DEFAULT_PHASE},
+            {{}, 0}
+        }
     },
     {DEFAULT_PHASE, 0}
 };
@@ -112,11 +169,12 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
 
     for (size_t i = 0; i < MAX_KEYS; i++) {
         // Add vibrato modulation to wave frequency if needed (FM modulation)
-        float current_frequency = data->waves[i].frequency + vibratoMod;
+        float current_frequency = data->signals[i].wave.frequency + vibratoMod;
 
         // Generate wave (sine wave is the only one supported at the moment)
-        float sample = data->waves[i].gate
-                        ? data->waves[i].amplitude * sinf(data->waves[i].phase)
+        float sample = data->signals[i].gate
+                        ? data->signals[i].wave.amplitude
+                          * sinf(data->signals[i].wave.phase)
                         : 0.0f;
         
         // Save the sample for this signal into left and right full sample
@@ -124,10 +182,10 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
         *right_sample += sample;
 
         // Update wave phase
-        data->waves[i].phase += 2.0f * (float)M_PI * current_frequency
+        data->signals[i].wave.phase += 2.0f * (float)M_PI * current_frequency
                                 / SAMPLE_RATE;
-        if (data->waves[i].phase >= 2.0f * (float)M_PI) {
-            data->waves[i].phase -= 2.0f * (float)M_PI;
+        if (data->signals[i].wave.phase >= 2.0f * (float)M_PI) {
+            data->signals[i].wave.phase -= 2.0f * (float)M_PI;
         }
     }
 
@@ -224,6 +282,9 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
 
 uint8_t init_sound() {
     PaError err;
+
+    // For random -> Karplus-Strong
+    srand(time(nullptr));
 
     kick_sample.data = loadWavFile(KICK_SAMPLE_PATH,
                                    &kick_sample.length,
@@ -327,7 +388,7 @@ void cleanup_sound() {
 
 void trigger_gate(uint8_t index) {
     if (index < MAX_KEYS) {
-        stream_data.waves[index].gate = !stream_data.waves[index].gate;
+        stream_data.signals[index].gate = !stream_data.signals[index].gate;
     } else {
         std::cout << "Trigger error: " << index << "is not a valid key!" << std::endl;
     }
