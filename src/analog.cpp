@@ -94,8 +94,8 @@ void loop_analog() {
                           ? true : false;
         if (new_reverb != reverb_status) {
             reverb_status = new_reverb;
-            std::cout << "Reverb is now set to "
-                      << static_cast<uint8_t>(reverb_status) << std::endl;
+            trigger_reverb();
+            std::cout << "Reverb is now set to " << reverb_status << std::endl;
         }
     }
 }

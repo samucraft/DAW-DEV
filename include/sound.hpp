@@ -20,4 +20,6 @@ void change_sound_type(SIGNAL_TYPE type);
 
 void set_volume(float volume);
 
+void trigger_reverb();
+
 #endif

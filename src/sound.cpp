@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <math.h>
@@ -40,6 +41,8 @@
 
 #define MAX_VOLUME 1.0f
 
+#define REVERB_DECAY 0.5f
+
 typedef struct wave {
     float amplitude;
     float frequency;
@@ -63,10 +66,17 @@ typedef struct vibrato {
     volatile uint8_t repetitions_left;
 } VIBRATO;
 
+typedef struct reverb {
+    volatile bool     enabled;
+    volatile uint16_t index;
+    volatile float    buffer[SAMPLE_RATE];
+} REVERB;
+
 typedef struct stream_data {
     SIGNAL           signals[MAX_KEYS];
     volatile VIBRATO vibrato;
     volatile float   volume;
+    REVERB           reverb;
 } STREAM_DATA;
 
 static STREAM_DATA stream_data = {
@@ -121,7 +131,8 @@ static STREAM_DATA stream_data = {
         }
     },
     {DEFAULT_PHASE, 0},
-    MAX_VOLUME
+    MAX_VOLUME,
+    {false, 0, {0}}
 };
 
 static PaStream *stream;
@@ -475,4 +486,14 @@ void change_sound_type(SIGNAL_TYPE type) {
 
 void set_volume(float volume) {
     stream_data.volume = volume;
+}
+
+void trigger_reverb() {
+    stream_data.reverb.enabled = !stream_data.reverb.enabled;
+    // When turning off, reset values
+    if (!stream_data.reverb.enabled) {
+        stream_data.reverb.index = 0;
+        std::fill(stream_data.reverb.buffer,
+                  stream_data.reverb.buffer + SAMPLE_RATE, 0.0f);
+    }
 }
