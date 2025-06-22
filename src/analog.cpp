@@ -23,8 +23,8 @@
 // Volume is connected to AIN0 -> 0b00[0] -> 0b[0]00 (after odd fix)
 #define ANALOG_VOLUME_CTRL 0x80
 
-#define MAX_VOLUME_INT 255
-#define MAX_VOLUME_FLT 255.0f
+#define MAX_ANALOG_VALUE_INT 255
+#define MAX_ANALOG_VALUE_FLT 255.0f
 
 static int analog_fd;
 
@@ -46,12 +46,12 @@ static uint8_t read_analog(uint8_t control_byte, uint8_t *value){
     return ANALOG_SUCCESS;
 }
 
-static uint8_t invert_volume(uint8_t volume) {
-    return MAX_VOLUME_INT - volume;
+static uint8_t invert_value(uint8_t value) {
+    return MAX_ANALOG_VALUE_INT - value;
 }
 
-static float normalize_volume(uint8_t volume) {
-    return static_cast<float>(volume) / MAX_VOLUME_FLT;
+static float normalize_value(uint8_t value) {
+    return static_cast<float>(value) / MAX_ANALOG_VALUE_FLT;
 }
 
 uint8_t init_analog() {
@@ -73,7 +73,7 @@ void loop_analog() {
          * Since turning the volume knob to the right sets the value to 0, we
          * need to convert the volume we get from 255-0 to 0-255.
          */
-        volume = invert_volume(volume);
-        set_volume(normalize_volume(volume));
+        volume = invert_value(volume);
+        set_volume(normalize_value(volume));
     }
 }
