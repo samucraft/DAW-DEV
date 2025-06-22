@@ -147,19 +147,6 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
                          void *userData) {
     STREAM_DATA *data = (STREAM_DATA *)userData;
     float       *out  = (float *)outputBuffer;
-    // float phase1 = data->phase1;
-    // float phase2 = data->phase2;
-    // float phase3 = data->phase3;
-    // float phase4 = data->phase4;
-    // float phase5 = data->phase5;
-    // float phase6 = data->phase6;
-    // float phase7 = data->phase7;
-    // float phase8 = data->phase8;
-    // float phase9 = data->phase9;
-    // float phase10 = data->phase10;
-    // float phase11 = data->phase11;
-    // float phase12 = data->phase12;
-    // float vibratoPhase = data->vibratoPhase;
 
     for (unsigned int i = 0; i < framesPerBuffer; i++) {
         /***********************************************************************
@@ -214,120 +201,15 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
         float right_wave_samples = 0.0f;
         compute_waves(data, &left_wave_samples, &right_wave_samples);
 
-        // // Comput vibrato if enabled
-        // float vibratoMod = vibrato ? vibratoDepth * sinf(vibratoPhase) : 0.0f;
-
-        // // Add vibrato to frequency is computed (FM modulation)
-        // float current_frequency1 = data->frequency1 + vibratoMod;
-        // float current_frequency2 = data->frequency2 + vibratoMod;
-        // float current_frequency3 = data->frequency3 + vibratoMod;
-        // float current_frequency4 = data->frequency4 + vibratoMod;
-        // float current_frequency5 = data->frequency5 + vibratoMod;
-        // float current_frequency6 = data->frequency6 + vibratoMod;
-        // float current_frequency7 = data->frequency7 + vibratoMod;
-        // float current_frequency8 = data->frequency8 + vibratoMod;
-        // float current_frequency9 = data->frequency9 + vibratoMod;
-        // float current_frequency10 = data->frequency10 + vibratoMod;
-        // float current_frequency11 = data->frequency11 + vibratoMod;
-        // float current_frequency12 = data->frequency12 + vibratoMod;
-
-        // float sample1  = gates[0]  ? data->amplitude1 * sinf(phase1)  : 0.0f;
-        // float sample2  = gates[1]  ? data->amplitude2 * sinf(phase2)  : 0.0f;
-        // float sample3  = gates[2]  ? data->amplitude3 * sinf(phase3)  : 0.0f;
-        // float sample4  = gates[3]  ? data->amplitude4 * sinf(phase4)  : 0.0f;
-        // float sample5  = gates[4]  ? data->amplitude5 * sinf(phase5)  : 0.0f;
-        // float sample6  = gates[5]  ? data->amplitude5 * sinf(phase6)  : 0.0f;
-        // float sample7  = gates[6]  ? data->amplitude5 * sinf(phase7)  : 0.0f;
-        // float sample8  = gates[7]  ? data->amplitude5 * sinf(phase8)  : 0.0f;
-        // float sample9  = gates[8]  ? data->amplitude5 * sinf(phase9)  : 0.0f;
-        // float sample10 = gates[9]  ? data->amplitude5 * sinf(phase10) : 0.0f;
-        // float sample11 = gates[10] ? data->amplitude5 * sinf(phase11) : 0.0f;
-        // float sample12 = gates[11] ? data->amplitude5 * sinf(phase12) : 0.0f;
-        
-        // phase1 += 2.0f * (float)M_PI * current_frequency1 / SAMPLE_RATE;
-        // if (phase1 >= 2.0f * (float)M_PI)
-        //     phase1 -= 2.0f * (float)M_PI;
-
-        // phase2 += 2.0f * (float)M_PI * current_frequency2 / SAMPLE_RATE;
-        // if (phase2 >= 2.0f * (float)M_PI)
-        //     phase2 -= 2.0f * (float)M_PI;
-
-        // phase3 += 2.0f * (float)M_PI * current_frequency3 / SAMPLE_RATE;
-        // if (phase3 >= 2.0f * (float)M_PI)
-        //     phase3 -= 2.0f * (float)M_PI;
-
-        // phase4 += 2.0f * (float)M_PI * current_frequency4 / SAMPLE_RATE;
-        // if (phase4 >= 2.0f * (float)M_PI)
-        //     phase4 -= 2.0f * (float)M_PI;
-
-        // phase5 += 2.0f * (float)M_PI * current_frequency5 / SAMPLE_RATE;
-        // if (phase5 >= 2.0f * (float)M_PI)
-        //     phase5 -= 2.0f * (float)M_PI;
-
-        // phase6 += 2.0f * (float)M_PI * current_frequency6 / SAMPLE_RATE;
-        // if (phase6 >= 2.0f * (float)M_PI)
-        //     phase6 -= 2.0f * (float)M_PI;
-
-        // phase7 += 2.0f * (float)M_PI * current_frequency7 / SAMPLE_RATE;
-        // if (phase7 >= 2.0f * (float)M_PI)
-        //     phase7 -= 2.0f * (float)M_PI;
-
-        // phase8 += 2.0f * (float)M_PI * current_frequency8 / SAMPLE_RATE;
-        // if (phase8 >= 2.0f * (float)M_PI)
-        //     phase8 -= 2.0f * (float)M_PI;
-
-        // phase9 += 2.0f * (float)M_PI * current_frequency9 / SAMPLE_RATE;
-        // if (phase9 >= 2.0f * (float)M_PI)
-        //     phase9 -= 2.0f * (float)M_PI;
-
-        // phase10 += 2.0f * (float)M_PI * current_frequency10 / SAMPLE_RATE;
-        // if (phase10 >= 2.0f * (float)M_PI)
-        //     phase10 -= 2.0f * (float)M_PI;
-
-        // phase11 += 2.0f * (float)M_PI * current_frequency11 / SAMPLE_RATE;
-        // if (phase11 >= 2.0f * (float)M_PI)
-        //     phase11 -= 2.0f * (float)M_PI;
-
-        // phase12 += 2.0f * (float)M_PI * current_frequency12 / SAMPLE_RATE;
-        // if (phase12 >= 2.0f * (float)M_PI)
-        //     phase12 -= 2.0f * (float)M_PI;
-
-        // vibratoPhase += 2.0f * (float)M_PI * VIBRATO_FREQUENCY / SAMPLE_RATE;
-        // if (vibratoPhase >= 2.0f * (float)M_PI)
-        //     vibratoPhase -= 2.0f * (float)M_PI;
-
         /***********************************************************************
          ************************** Writing to output **************************
          **********************************************************************/
 
-        // *out++ = sample1 + sample2 + sample3 + sample4
-        //          + sample5 + sample6 + sample7 + sample8
-        //          + sample9 + sample10 + sample11 + sample12
-        //          + left_kick_sample + left_snare_sample + left_hi_hat_sample;   // Left
-        // *out++ = sample1 + sample2 + sample3 + sample4
-        //          + sample5 + sample6 + sample7 + sample8
-        //          + sample9 + sample10 + sample11 + sample12
-        //          + right_kick_sample + right_snare_sample + right_hi_hat_sample;// Right
         *out++ = left_wave_samples + left_kick_sample + left_snare_sample
                  + left_hi_hat_sample;
         *out++ = right_wave_samples + right_kick_sample + right_snare_sample
                  + right_hi_hat_sample;
     }
-
-    // data->phase1 = phase1;
-    // data->phase2 = phase2;
-    // data->phase3 = phase3;
-    // data->phase4 = phase4;
-    // data->phase5 = phase5;
-    // data->phase6 = phase6;
-    // data->phase7 = phase7;
-    // data->phase8 = phase8;
-    // data->phase9 = phase9;
-    // data->phase10 = phase10;
-    // data->phase11 = phase11;
-    // data->phase12 = phase12;
-
-    // data->vibratoPhase = vibratoPhase;
 
     if (vibrato) {
         data->vibrato.repetitions_left--;
