@@ -6,6 +6,7 @@
 #include "cam.hpp"
 #include "disp.hpp"
 #include "keys.hpp"
+#include "led.hpp"
 #include "signal.hpp"
 #include "sound.hpp"
 #include "touch.hpp"
@@ -17,6 +18,7 @@ int main() {
     RET_IF_ERR(init_keys());
     RET_IF_ERR(init_sound());
     RET_IF_ERR(init_disp());
+    RET_IF_ERR(init_led());
     // init_touch();
     // init_accel();
     init_cam();
@@ -34,6 +36,7 @@ int main() {
 
     cleanup_sound();
     cleanup_disp();
+    cleanup_led();
 
     std::cout << "... exiting app ...\n";
     return 0;

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "disp.hpp"
+#include "led.hpp"
 #include "signal.h"
 #include "sound.hpp"
 
@@ -12,6 +13,7 @@ void signalHandler(int signal) {
 
         cleanup_sound();
         cleanup_disp();
+        cleanup_led();
 
         exit(0); // Exit the program
     }

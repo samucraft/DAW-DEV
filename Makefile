@@ -25,6 +25,7 @@ ACCEL_SRC = $(SRC_DIR)/accel.cpp
 DISP_SRC = $(SRC_DIR)/disp.cpp
 THEORY_SRC = $(SRC_DIR)/theory.cpp
 CAM_SRC = $(SRC_DIR)/cam.cpp
+LED_SRC = $(SRC_DIR)/led.cpp
 
 # Objects
 OBJ = $(OBJ_DIR)/main.o
@@ -36,6 +37,7 @@ ACCEL_OBJ = $(OBJ_DIR)/accel.o
 DISP_OBJ = $(OBJ_DIR)/disp.o
 THEORY_OBJ = $(OBJ_DIR)/theory.o
 CAM_OBJ = $(OBJ_DIR)/cam.o
+LED_OBJ = $(OBJ_DIR)/led.o
 
 CXXFLAGS += -I$(INC_DIR)
 
@@ -43,15 +45,17 @@ CXXFLAGS += -I$(INC_DIR)
 WIP_LIB = -lwiringPi
 PA_LIB = -lportaudio
 SND_LIB = -lsndfile
-LIBS = $(WIP_LIB) $(PA_LIB) $(SND_LIB)
+LED_LIB = -lws2811
+LED_LIB_PATH = -L../rpi_ws281x -I../rpi_ws281x
+LIBS = $(WIP_LIB) $(PA_LIB) $(SND_LIB) $(LED_LIB)
 
 # Default target
 all: $(TARGET)
 
 # Link object files to create executable
-$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ)
+$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(LIBS) $(LED_LIB_PATH)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
@@ -97,6 +101,11 @@ $(THEORY_OBJ): $(THEORY_SRC)
 $(CAM_OBJ): $(CAM_SRC)
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $(CAM_SRC) -o $(CAM_OBJ)
+
+# Compile led module
+$(LED_OBJ): $(LED_SRC)
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $(LED_SRC) -o $(LED_OBJ) $(LED_LIB_PATH)
 
 # Clean up build files
 clean:

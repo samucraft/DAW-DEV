@@ -4,6 +4,7 @@
 #include <wiringPiI2C.h>
 
 #include "keys.hpp"
+#include "led.hpp"
 #include "sound.hpp"
 #include "theory.hpp"
 
@@ -91,6 +92,8 @@ void loop_keys() {
                       << static_cast<int>(curr_state) <<"!\n";
             
             trigger_gate(i);
+
+            set_led(i, !curr_state);
         }
     }
 
