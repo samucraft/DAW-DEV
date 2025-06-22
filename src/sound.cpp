@@ -187,6 +187,8 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                                  : 0.0f;
 
     for (size_t i = 0; i < MAX_KEYS; i++) {
+        float sample = 0.0f;
+
         // If normal wave:
         if (data->signals[i].type == WAVE_e) {
             // Add vibrato modulation to wave frequency if needed (FM mod.)
@@ -194,28 +196,10 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                                       + vibratoMod;
 
             // Generate wave (sine wave is the only one supported at the moment)
-            float sample = data->signals[i].gate
-                            ? data->volume * data->signals[i].wave.amplitude
-                              * sinf(data->signals[i].wave.phase)
-                            : 0.0f;
-            
-            if (data->reverb.enabled) {
-                float reverb = data->reverb.buffer[data->reverb.index];
-                sample += REVERB_DECAY * reverb;
-                data->reverb.buffer[data->reverb.index] = sample;
-
-                if (sample > 1.0f) {
-                    sample = 1.0f;
-                } else if (sample < -1.0f) {
-                    sample = -1.0f;
-                }
-
-                data->reverb.index = (data->reverb.index + 1) % SAMPLE_RATE;
-            }
-            
-            // Save the sample for this signal into left and right full sample
-            *left_sample += sample;
-            *right_sample += sample;
+            sample = data->signals[i].gate
+                     ? data->volume * data->signals[i].wave.amplitude
+                       * sinf(data->signals[i].wave.phase)
+                     : 0.0f;
 
             // Update wave phase
             data->signals[i].wave.phase += 2.0f * (float)M_PI
@@ -235,19 +219,36 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                 float new_sample = KS_DECAY * 0.5f * (first + next);
 
                 data->signals[i].ks.buffer[data->signals[i].ks.index] = new_sample;
-                float sample = data->volume * new_sample;
+                sample = data->volume * new_sample;
 
                 data->signals[i].ks.index = (data->signals[i].ks.index + 1) % data->signals[i].ks.buffer.size();
-
-                *left_sample += sample;
-                *right_sample += sample;
             }
         }
 
         else {
             std::cout << "Key " << i << " is configured to invalid signal type"
                       << std::endl;
+            continue;
         }
+
+        // Compute reverb effect if enabled
+        if (data->reverb.enabled) {
+            float reverb = data->reverb.buffer[data->reverb.index];
+            sample += REVERB_DECAY * reverb;
+            data->reverb.buffer[data->reverb.index] = sample;
+
+            if (sample > 1.0f) {
+                sample = 1.0f;
+            } else if (sample < -1.0f) {
+                sample = -1.0f;
+            }
+
+            data->reverb.index = (data->reverb.index + 1) % SAMPLE_RATE;
+        }
+
+        // Save the sample for this signal into left and right full sample
+        *left_sample  += sample;
+        *right_sample += sample;
     }
 
     // Update vibrato phase
