@@ -37,7 +37,7 @@ static std::vector<int> pressed_keys;
 static std::vector<int> intervals;
 
 static std::wstring get_state_str(bool state) {
-    if (state) {
+    if (!state) {
         return L"█";
     }
     return L" ";
@@ -64,7 +64,7 @@ static void get_pressed_keys(key keys[]) {
 
     bool first = true;
     for (size_t i = 0; i < MAX_KEYS; i++) {
-        if (keys[i].state && (std::find(pressed_keys.begin(), pressed_keys.end(), i % MAX_KEYS) == pressed_keys.end())) {
+        if (!keys[i].state && (std::find(pressed_keys.begin(), pressed_keys.end(), i % MAX_KEYS) == pressed_keys.end())) {
             if (!first) {
                 std::cout << " -> ";
             }
