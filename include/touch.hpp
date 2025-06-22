@@ -1,5 +1,5 @@
-#ifndef TOUCH_UTILS_H
-#define TOUCH_UTILS_H
+#ifndef DAW_TOUCH_H
+#define DAW_TOUCH_H
 
 // Key states
 #define TOUCH_UNPRESSED 0

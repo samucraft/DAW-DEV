@@ -1,5 +1,5 @@
-#ifndef ACCEL_UTILS_H
-#define ACCEL_UTILS_H
+#ifndef DAW_ACCEL_H
+#define DAW_ACCEL_H
 
 void init_accel();
 
