@@ -36,8 +36,7 @@
 #define B_FREQ  493.88f
 
 // For Karplus-Strong
-#define KS_DURATION 2.0;    // seconds
-#define KS_DECAY    0.996f; // Damping factor
+#define KS_DECAY    0.996f // Damping factor
 
 enum signal_type {
     WAVE_e = 0,
@@ -51,8 +50,8 @@ typedef struct wave {
 } WAVE;
 
 typedef struct ks {
-    std::vector<float> ks_buffer;
-    int                ks_index;
+    std::vector<float> buffer;
+    int                index;
 } KS;
 
 typedef struct signal {
@@ -74,7 +73,7 @@ typedef struct stream_data {
 
 static STREAM_DATA stream_data = {
     {
-        {false, WAVE_e,
+        {false, KS_e,
             {DEFAULT_AMPLITUDE, C_FREQ, DEFAULT_PHASE},
             {{}, 0}
         },
@@ -162,30 +161,68 @@ float* loadWavFile(const char *path, int *numFrames, int *numChannels, int *samp
     return data;
 }
 
+static void initialize_ks(SIGNAL *signal) {
+    int buffer_size = static_cast<int>(SAMPLE_RATE / signal->wave.frequency);
+    signal->ks.buffer.resize(buffer_size);
+    for (int i = 0; i < buffer_size; ++i) {
+        signal->ks.buffer[i] = static_cast<float>((rand() / (float)RAND_MAX)
+                                                  * 2.0 - 1.0);
+    }
+    signal->ks.index = 0;
+}
+
 void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
     // Compute vibrato modulation if enabled
     float vibratoMod = vibrato ? vibratoDepth * sinf(data->vibrato.vibratoPhase)
                                  : 0.0f;
 
     for (size_t i = 0; i < MAX_KEYS; i++) {
-        // Add vibrato modulation to wave frequency if needed (FM modulation)
-        float current_frequency = data->signals[i].wave.frequency + vibratoMod;
+        // If normal wave:
+        if (data->signals[i].type == WAVE_e) {
+            // Add vibrato modulation to wave frequency if needed (FM mod.)
+            float current_frequency = data->signals[i].wave.frequency
+                                      + vibratoMod;
 
-        // Generate wave (sine wave is the only one supported at the moment)
-        float sample = data->signals[i].gate
-                        ? data->signals[i].wave.amplitude
-                          * sinf(data->signals[i].wave.phase)
-                        : 0.0f;
-        
-        // Save the sample for this signal into left and right full sample
-        *left_sample += sample;
-        *right_sample += sample;
+            // Generate wave (sine wave is the only one supported at the moment)
+            float sample = data->signals[i].gate
+                            ? data->signals[i].wave.amplitude
+                            * sinf(data->signals[i].wave.phase)
+                            : 0.0f;
+            
+            // Save the sample for this signal into left and right full sample
+            *left_sample += sample;
+            *right_sample += sample;
 
-        // Update wave phase
-        data->signals[i].wave.phase += 2.0f * (float)M_PI * current_frequency
-                                / SAMPLE_RATE;
-        if (data->signals[i].wave.phase >= 2.0f * (float)M_PI) {
-            data->signals[i].wave.phase -= 2.0f * (float)M_PI;
+            // Update wave phase
+            data->signals[i].wave.phase += 2.0f * (float)M_PI
+                                           * current_frequency / SAMPLE_RATE;
+            if (data->signals[i].wave.phase >= 2.0f * (float)M_PI) {
+                data->signals[i].wave.phase -= 2.0f * (float)M_PI;
+            }
+        }
+
+        // If Karplus-Strong synthesis:
+        if (data->signals[i].type == KS_e) {
+            if (data->signals[i].gate) {
+                // Apply Karplus-Strong feedback
+                float first = data->signals[i].ks.buffer[data->signals[i].ks.index];
+                float next  = data->signals[i].ks.buffer[(data->signals[i].ks.index + 1)
+                              % data->signals[i].ks.buffer.size()];
+                float new_sample = KS_DECAY * 0.5f * (first + next);
+
+                data->signals[i].ks.buffer[data->signals[i].ks.index] = new_sample;
+                float sample = new_sample;
+
+                data->signals[i].ks.index = (data->signals[i].ks.index + 1) % data->signals[i].ks.buffer.size();
+
+                *left_sample += sample;
+                *right_sample += sample;
+            }
+        }
+
+        else {
+            std::cout << "Key " << i << " is configured to invalid signal type"
+                      << std::endl;
         }
     }
 
@@ -389,6 +426,11 @@ void cleanup_sound() {
 void trigger_gate(uint8_t index) {
     if (index < MAX_KEYS) {
         stream_data.signals[index].gate = !stream_data.signals[index].gate;
+
+        if (stream_data.signals[index].type == KS_e) {
+            // Need to initialize buffer for Karplus-Strong
+            initialize_ks(&stream_data.signals[index]);
+        }
     } else {
         std::cout << "Trigger error: " << index << "is not a valid key!" << std::endl;
     }
