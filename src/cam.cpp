@@ -4,7 +4,6 @@
 #include <string>
 #include <sys/file.h>
 #include <unistd.h>
-#include <time.h>
 
 #include "sound.hpp"
 
@@ -27,16 +26,13 @@ static char read_fifo_gesture() {
 
     flock(fd, LOCK_SH);  // shared lock
 
-    char buffer[2];
-    read(fd, buffer, 1);
-    buffer[1] = '\0';
-    std::cout << "|" << buffer << "|" << std::endl;
-    usleep(500000);
+    char gesture;
+    read(fd, &gesture, 1);
 
     flock(fd, LOCK_UN);  // unlock
     close(fd);
 
-    return buffer[0];
+    return gesture;
 }
 
 void init_cam() {
