@@ -38,6 +38,7 @@ while running:
 
     if contours:
         max_contour = max(contours, key=cv2.contourArea)
+        print(f"Contour area: {cv2.contourArea(max_contour)}")
         if cv2.contourArea(max_contour) > MIN_CONTOUR_AREA:
             hull = cv2.convexHull(max_contour, returnPoints=False)
             if hull is not None and len(hull) > 3:
