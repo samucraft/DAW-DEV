@@ -23,6 +23,7 @@ SOUND_SRC = $(SRC_DIR)/sound.cpp
 TOUCH_SRC = $(SRC_DIR)/touch.cpp
 ACCEL_SRC = $(SRC_DIR)/accel.cpp
 DISP_SRC = $(SRC_DIR)/disp.cpp
+THEORY_SRC = $(SRC_DIR)/theory.cpp
 
 # Objects
 OBJ = $(OBJ_DIR)/main.o
@@ -32,6 +33,7 @@ SOUND_OBJ = $(OBJ_DIR)/sound.o
 TOUCH_OBJ = $(OBJ_DIR)/touch.o
 ACCEL_OBJ = $(OBJ_DIR)/accel.o
 DISP_OBJ = $(OBJ_DIR)/disp.o
+THEORY_OBJ = $(OBJ_DIR)/theory.o
 
 CXXFLAGS += -I$(INC_DIR)
 
@@ -45,9 +47,9 @@ LIBS = $(WIP_LIB) $(PA_LIB) $(SND_LIB)
 all: $(TARGET)
 
 # Link object files to create executable
-$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ)
+$(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(LIBS)
 
 # Compile main file into object file
 $(OBJ): $(SRC)
@@ -80,9 +82,14 @@ $(ACCEL_OBJ): $(ACCEL_SRC)
 	$(CXX) $(CXXFLAGS) -c $(ACCEL_SRC) -o $(ACCEL_OBJ)
 
 # Compile disp module
-$(DISP_OBJ): $(DISP_SRC)
+$(THEORY_OBJ): $(DISP_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(DISP_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(THEORY_OBJ)
+
+# Compile disp module
+$(DISP_OBJ): $(THEORY_SRC)
+	@mkdir -p $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $(THEORY_SRC) -o $(DISP_OBJ)
 
 # Clean up build files
 clean:
