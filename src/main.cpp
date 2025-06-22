@@ -7,7 +7,6 @@
 #include "keys.hpp"
 #include "signal.hpp"
 #include "sound.hpp"
-#include "theory.hpp"
 #include "touch.hpp"
 #include "utils.hpp"
 
@@ -17,7 +16,6 @@ int main() {
     RET_IF_ERR(init_keys());
     RET_IF_ERR(init_sound());
     RET_IF_ERR(init_disp());
-    init_theory();
     // init_touch();
     // init_accel();
 
