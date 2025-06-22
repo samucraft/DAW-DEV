@@ -199,6 +199,20 @@ void compute_waves(STREAM_DATA *data, float *left_sample, float *right_sample) {
                               * sinf(data->signals[i].wave.phase)
                             : 0.0f;
             
+            if (data->reverb.enabled) {
+                float reverb = data->reverb.buffer[data->reverb.index];
+                sample += REVERB_DECAY * reverb;
+                data->reverb.buffer[data->reverb.index] = sample;
+
+                if (sample > 1.0f) {
+                    sample = 1.0f;
+                } else if (sample < -1.0f) {
+                    sample = -1.0f;
+                }
+
+                data->reverb.index = (data->reverb.index + 1) % SAMPLE_RATE;
+            }
+            
             // Save the sample for this signal into left and right full sample
             *left_sample += sample;
             *right_sample += sample;
