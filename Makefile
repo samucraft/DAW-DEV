@@ -82,14 +82,14 @@ $(ACCEL_OBJ): $(ACCEL_SRC)
 	$(CXX) $(CXXFLAGS) -c $(ACCEL_SRC) -o $(ACCEL_OBJ)
 
 # Compile disp module
-$(THEORY_OBJ): $(DISP_SRC)
+$(DISP_OBJ): $(DISP_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(THEORY_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(DISP_OBJ)
 
-# Compile disp module
-$(DISP_OBJ): $(THEORY_SRC)
+# Compile theory module
+$(THEORY_OBJ): $(THEORY_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(THEORY_SRC) -o $(DISP_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(THEORY_SRC) -o $(THEORY_OBJ)
 
 # Clean up build files
 clean:

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "accel.hpp"
+#include "disp.hpp"
 #include "keys.hpp"
 #include "signal.hpp"
 #include "sound.hpp"
@@ -14,6 +15,7 @@ int main() {
 
     RET_IF_ERR(init_keys());
     RET_IF_ERR(init_sound());
+    RET_IF_ERR(init_disp());
     // init_touch();
     // init_accel();
 
@@ -27,6 +29,7 @@ int main() {
     }
 
     cleanup_sound();
+    cleanup_disp();
 
     std::cout << "... exiting app ...\n";
     return 0;

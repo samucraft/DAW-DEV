@@ -3,6 +3,7 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
+#include "disp.hpp"
 #include "keys.hpp"
 #include "sound.hpp"
 
