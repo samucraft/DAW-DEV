@@ -33,7 +33,7 @@ static int read_fifo_gesture() {
     flock(fd, LOCK_UN);  // unlock
     close(fd);
 
-    return std::stoi(buffer);
+    return buffer[0] - '0';
 }
 
 void init_cam() {
