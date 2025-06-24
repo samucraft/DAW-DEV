@@ -27,18 +27,18 @@
 
 key keys[] = {
     // Need updates
-    {"C" , 0b1}, // C     - Do
-    {"C#", 0b1}, // C#/Db - Do sos. / Re bemol
-    {"D" , 0b1}, // D     - Re
-    {"D#", 0b1}, // D#/Eb - Do sos. / Mi bemol
-    {"E" , 0b1}, // E     - Mi
-    {"F" , 0b1}, // F     - Fa
-    {"F#", 0b1}, // F#/Gb - Fa sos. / Sol bemol
-    {"G" , 0b1}, // G     - Sol
-    {"G#", 0b1}, // G#/Ab - Sol sos. / La bemol
-    {"A" , 0b1}, // A     - La
-    {"A#", 0b1}, // A#/Bb - La sos. / Si bemol
-    {"B" , 0b1}  // B     - Si
+    {"Do" , 0b1}, // C     - Do
+    {"Do#", 0b1}, // C#/Db - Do sos. / Re bemol
+    {"Re" , 0b1}, // D     - Re
+    {"Re#", 0b1}, // D#/Eb - Do sos. / Mi bemol
+    {"Mi" , 0b1}, // E     - Mi
+    {"Fa" , 0b1}, // F     - Fa
+    {"Fa#", 0b1}, // F#/Gb - Fa sos. / Sol bemol
+    {"Sol" , 0b1}, // G     - Sol
+    {"Sol#", 0b1}, // G#/Ab - Sol sos. / La bemol
+    {"La" , 0b1}, // A     - La
+    {"La#", 0b1}, // A#/Bb - La sos. / Si bemol
+    {"Si" , 0b1}  // B     - Si
 };
 
 static int fd;

@@ -5,7 +5,7 @@
 
 typedef struct key
 {
-    char name[4];
+    char name[5];
     uint8_t state;
 } key;
 
