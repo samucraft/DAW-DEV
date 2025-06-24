@@ -10,28 +10,39 @@
 
 #include "theory.hpp"
 
+#define NO_CHORD "-"
+
+typedef struct suggestion {
+    uint8_t     interval_from_root;
+    std::string suffix;
+} SUGGESTION;
+
 struct ChordPattern {
-    std::string name;
+    std::string      name;
     std::vector<int> intervals;
+    bool             has_suggestions;
+    SUGGESTION       suggestions[2];
 };
 
 const std::vector<ChordPattern> CHORD_PATTERNS = {
-    {"",      {4}},              // Major
-    {"m",     {3}},              // Minor
-    {"5",     {7}},              // Power chord
-    {"",      {4, 3}},           // Major
-    {"m",     {3, 4}},           // Minor
-    {"dim",   {3, 3}},           // Diminished
-    {"aug",   {4, 4}},           // Augmented
-    {"7",     {4, 3, 3}},        // Dominant 7th
-    {"maj7",  {4, 3, 4}},        // Major 7th
-    {"m7",    {3, 4, 3}},        // Minor 7th
-    {"mMaj7", {3, 4, 4}},        // Minor Major 7th
-    {"°7",    {3, 3, 3}},        // Diminished 7th
-    {"m7(b5)",{3, 3, 4}},        // Half Diminished 7th
-    {"7(#5)", {4, 4, 2}},        // Dominant 7th Sharp 5
-    {"maj7(#5)",{4, 4, 3}}       // Major 7th Sharp 5
+    {""        , {4}      , true , {{7, ""}, {8, "aug"}}},             // Major
+    {"m"       , {3}      , true , {{7, "m"}, {6, "dim"}}},            // Minor
+    {"5"       , {7}      , true , {{4, ""}, {3, "m"}}},               // Power chord
+    {""        , {4, 3}   , true , {{10, "7"}, {11, "maj7"}}},         // Major
+    {"m"       , {3, 4}   , true , {{10, "m7"}, {11, "mMaj7"}}},       // Minor
+    {"dim"     , {3, 3}   , true , {{9, "°7"}, {10, "m7(b5)"}}},       // Diminished
+    {"aug"     , {4, 4}   , true , {{10, "7(#5)"}, {11, "maj7(#5)"}}}, // Augmented
+    {"7"       , {4, 3, 3}, false}, // Dominant 7th
+    {"maj7"    , {4, 3, 4}, false}, // Major 7th
+    {"m7"      , {3, 4, 3}, false}, // Minor 7th
+    {"mMaj7"   , {3, 4, 4}, false}, // Minor Major 7th
+    {"°7"      , {3, 3, 3}, false}, // Diminished 7th
+    {"m7(b5)"  , {3, 3, 4}, false}, // Half Diminished 7th
+    {"7(#5)"   , {4, 4, 2}, false}, // Dominant 7th Sharp 5
+    {"maj7(#5)", {4, 4, 3}, false}  // Major 7th Sharp 5
 };
+
+extern key keys[];
 
 static std::vector<int> pressed_keys;
 static std::vector<int> intervals;
@@ -89,11 +100,13 @@ static std::vector<int> rotate_vector(const std::vector<int>& v, int n) {
 static void determine_chord(key keys[]) {
     int interval;
     std::string chord, composition;
+    std::string sug1, sug2;
 
     if (pressed_keys.size() == 0) {
         std::cout << "-" << std::endl;
 
         set_chord("t0.txt=\"-\"", "t1.txt=\"-\"");
+        set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
         return;
     } else if (pressed_keys.size() == 1) {
         std::cout << keys[pressed_keys[0]].name << std::endl;
@@ -105,6 +118,14 @@ static void determine_chord(key keys[]) {
         composition += keys[pressed_keys[0]].name;
         composition += "\"";
         set_chord(chord, composition);
+
+        sug1 = "b3.txt=\"";
+        sug1 += keys[pressed_keys[0]].name;
+        sug1 += "\"";
+        sug2 = "b4.txt=\"";
+        sug2 += keys[pressed_keys[0]].name;
+        sug2 += "m\"";
+        set_suggestions(sug1, sug2);
         return;
     }
 
@@ -153,6 +174,18 @@ static void determine_chord(key keys[]) {
                 composition += keys[pressed_keys[i]].name;
                 composition += "\"";
                 set_chord(chord, composition);
+
+                sug1 = "b3.txt=\"";
+                sug1 += keys[pressed_keys[0]].name;
+                sug2 = "b4.txt=\"";
+                sug2 += keys[pressed_keys[0]].name;
+                if (pattern.has_suggestions) {
+                    sug1 += pattern.suggestions->suffix;
+                    sug1 += pattern.suggestions->suffix;
+                }
+                sug1 += "\"";
+                sug2 += "\"";
+                set_suggestions(sug1, sug2);
                 return;
             }
         }
@@ -170,6 +203,7 @@ static void determine_chord(key keys[]) {
     composition += keys[pressed_keys[i]].name;
     composition += "\"";
     set_chord("t0.txt=\"?\"", composition);
+    set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
 }
 
 void update_music_state(key keys[]) {

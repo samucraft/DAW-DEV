@@ -25,7 +25,7 @@
 #define GPIOA           0x12
 #define GPIOB           0x13
 
-static key keys[] = {
+key keys[] = {
     // Need updates
     {"C" , 0b1}, // C     - Do
     {"C#", 0b1}, // C#/Db - Do sos. / Re bemol

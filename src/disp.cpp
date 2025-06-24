@@ -52,3 +52,8 @@ void set_chord(std::string chord, std::string composition) {
     send_command(chord);
     send_command(composition);
 }
+
+void set_suggestions(std::string sug1, std::string sug2) {
+    send_command(sug1);
+    send_command(sug2);
+}
