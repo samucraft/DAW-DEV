@@ -92,7 +92,7 @@ uint8_t init_led() {
         ledstring.channel[0].leds[i] = LED_COLOR_BLK;
     }
     for (const auto& scale_key : scale) {
-        ledstring.channel[0].leds[scale_key] = LED_COLOR_SCALE;
+        ledstring.channel[0].leds[key_leds[scale_key]] = LED_COLOR_SCALE;
     }
     ws2811_render(&ledstring);
 
