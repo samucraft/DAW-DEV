@@ -7,6 +7,7 @@
 
 #include "disp.hpp"
 #include "keys.hpp"
+#include "led.hpp"
 
 #include "theory.hpp"
 
@@ -97,16 +98,28 @@ static std::vector<int> rotate_vector(const std::vector<int>& v, int n) {
     return rotated;
 }
 
+static uint8_t get_key_suggestion_index(uint8_t root, uint8_t interval) {
+    return (root + interval) % MAX_KEYS;
+}
+
+static void update_suggestions(uint8_t idx_1, uint8_t idx_2) {
+    turn_off_suggestions();
+    light_suggestions(idx_1, idx_2);
+}
+
 static void determine_chord(key keys[]) {
     int interval;
     std::string chord, composition;
     std::string sug1, sug2;
+    uint8_t sug1_idx, sug2_idx;
 
     if (pressed_keys.size() == 0) {
         std::cout << "-" << std::endl;
 
         set_chord("t0.txt=\"-\"", "t1.txt=\"-\"");
+
         set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
+        turn_off_suggestions();
         return;
     } else if (pressed_keys.size() == 1) {
         std::cout << keys[pressed_keys[0]].name << std::endl;
@@ -126,6 +139,10 @@ static void determine_chord(key keys[]) {
         sug2 += keys[pressed_keys[0]].name;
         sug2 += "m\"";
         set_suggestions(sug1, sug2);
+
+        sug1_idx = get_key_suggestion_index(pressed_keys[0], 4);
+        sug2_idx = get_key_suggestion_index(pressed_keys[0], 3);
+        update_suggestions(sug1_idx, sug2_idx);
         return;
     }
 
@@ -186,6 +203,12 @@ static void determine_chord(key keys[]) {
                 sug1 += "\"";
                 sug2 += "\"";
                 set_suggestions(sug1, sug2);
+
+                sug1_idx = get_key_suggestion_index(rotated[0],
+                                    pattern.suggestions[0].interval_from_root);
+                sug2_idx = get_key_suggestion_index(rotated[0],
+                                    pattern.suggestions[1].interval_from_root);
+                update_suggestions(sug1_idx, sug2_idx);
                 return;
             }
         }
@@ -203,7 +226,9 @@ static void determine_chord(key keys[]) {
     composition += keys[pressed_keys[i]].name;
     composition += "\"";
     set_chord("t0.txt=\"?\"", composition);
+
     set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
+    turn_off_suggestions();
 }
 
 void update_music_state(key keys[]) {
