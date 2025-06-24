@@ -193,22 +193,27 @@ static void determine_chord(key keys[]) {
                 set_chord(chord, composition);
 
                 sug1 = "b3.txt=\"";
-                sug1 += keys[pressed_keys[0]].name;
                 sug2 = "b4.txt=\"";
-                sug2 += keys[pressed_keys[0]].name;
                 if (pattern.has_suggestions) {
+                    sug1 += keys[pressed_keys[0]].name;
                     sug1 += pattern.suggestions[0].suffix;
-                    sug2 += pattern.suggestions[1].suffix;
-                }
-                sug1 += "\"";
-                sug2 += "\"";
-                set_suggestions(sug1, sug2);
+                    sug1 += "\"";
 
-                sug1_idx = get_key_suggestion_index(rotated[0],
+                    sug2 += keys[pressed_keys[0]].name;
+                    sug2 += pattern.suggestions[1].suffix;
+                    sug2 += "\"";
+
+                    sug1_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[0].interval_from_root);
-                sug2_idx = get_key_suggestion_index(rotated[0],
+                    sug2_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[1].interval_from_root);
-                update_suggestions(sug1_idx, sug2_idx);
+                    update_suggestions(sug1_idx, sug2_idx);
+                } else {
+                    sug1 += "-\"";
+                    sug2 += "-\"";
+                    turn_off_suggestions();
+                }
+                set_suggestions(sug1, sug2);
                 return;
             }
         }
