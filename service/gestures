@@ -6,7 +6,7 @@ EXECUTABLE="python3 gesture_detection/gesture_detection.py"
 FIFO="/tmp/gesture.txt"
 
 if [ ! -f FIFO ]; then
-    sudo touch FIFO
+    touch FIFO
 fi
 
 cd "$PROJECT_DIR" || { echo "Failed to cd to $PROJECT_DIR"; exit 1; }
