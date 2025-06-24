@@ -12,7 +12,7 @@ typedef struct touch
 } touch;
 
 // Initialize keys
-void init_touch();
+uint8_t init_touch();
 
 // Set key state
 void set_touch(touch *touch, uint8_t state);

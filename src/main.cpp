@@ -21,7 +21,7 @@ int main() {
     RET_IF_ERR(init_disp());
     RET_IF_ERR(init_led());
     RET_IF_ERR(init_analog());
-    init_touch();
+    RET_IF_ERR(init_touch());
     init_accel();
     init_cam();
 
