@@ -8,8 +8,12 @@
 #define TOUCH_SUCCESS 0
 #define TOUCH_INITERR 1
 
-// Defines the max number of keys to load (must support up to 5 in the future)
-#define MAX_TOUCH 3
+// Defines the max number of keys to load
+#define MAX_TOUCH 5
+    #define TOUCH_SAMPLES 3
+
+#define UP_OCTAVE   3
+#define DOWN_OCTAVE 4
 
 typedef struct touch
 {
@@ -53,8 +57,14 @@ void loop_touch() {
             std::cout << "Touch " << static_cast<int>(i) << " changed to "
                       << static_cast<int>(tmp_state) <<"!\n";
 
-            if (tmp_state) {
+            if (tmp_state && (i < TOUCH_SAMPLES)) {
                 trigger_sample(i);
+            } else if (tmp_state && (i >= TOUCH_SAMPLES)) {
+                if (i == UP_OCTAVE) {
+                    change_frequency(INC_OCTAVE);
+                } else {
+                    change_frequency(DEC_OCTAVE);
+                }
             }
         }
     }

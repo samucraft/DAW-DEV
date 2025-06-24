@@ -43,6 +43,9 @@
 
 #define REVERB_DECAY 0.5f
 
+#define MAX_INC_OCTAVE 2
+#define MAX_DEC_OCTAVE -2
+
 typedef struct wave {
     float amplitude;
     float frequency;
@@ -152,6 +155,8 @@ static Sample hi_hat_sample;
 
 static volatile bool vibrato;
 static float vibratoDepth;
+
+static int octave_increment;
 
 float* loadWavFile(const char *path, int *numFrames, int *numChannels, int *sampleRate) {
     SF_INFO sfinfo;
@@ -435,6 +440,8 @@ uint8_t init_sound() {
     vibrato = false;
     vibratoDepth = (VIBRATO_DEPTH / VIBRATO_FREQUENCY) * 2.0f * M_PI;
 
+    octave_increment = 0;
+
     return 0;
 }
 
@@ -510,5 +517,26 @@ void trigger_reverb() {
         stream_data.reverb.index = 0;
         std::fill(stream_data.reverb.buffer,
                   stream_data.reverb.buffer + SAMPLE_RATE, 0.0f);
+    }
+}
+
+void change_frequency(bool increase) {
+    float mod;
+
+    if (increase && (octave_increment < MAX_INC_OCTAVE)) {
+        mod = 2.0f;
+        octave_increment++;
+    } else if (!increase && (octave_increment > MAX_DEC_OCTAVE)) {
+        mod = -2.0f;
+        octave_increment--;
+    } else {
+        return;
+    }
+
+    for (size_t i = 0; i < MAX_KEYS; i++) {
+        stream_data.signals[i].wave.frequency *= mod;
+        if (stream_data.signals[i].type == KS_e) {
+            initialize_ks(&stream_data.signals[i]);
+        }
     }
 }
