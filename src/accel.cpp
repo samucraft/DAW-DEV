@@ -85,9 +85,9 @@ void init_accel() {
 
 void loop_accel() {
     /*Read raw value of Accelerometer and gyroscope from MPU6050*/
-    Acc_x = read_raw_data(ACCEL_XOUT_H);
-    Acc_y = read_raw_data(ACCEL_YOUT_H);
-    Acc_z = read_raw_data(ACCEL_ZOUT_H);
+    // Acc_x = read_raw_data(ACCEL_XOUT_H);
+    // Acc_y = read_raw_data(ACCEL_YOUT_H);
+    // Acc_z = read_raw_data(ACCEL_ZOUT_H);
 
     // Disable
     Gyro_x = read_raw_data(GYRO_XOUT_H);
@@ -95,9 +95,9 @@ void loop_accel() {
     Gyro_z = read_raw_data(GYRO_ZOUT_H);
 
     /* Divide raw value by sensitivity scale factor */
-    Ax = Acc_x / 16384.0f;
-    Ay = Acc_y / 16384.0f;
-    Az = Acc_z / 16384.0f;
+    // Ax = Acc_x / 16384.0f;
+    // Ay = Acc_y / 16384.0f;
+    // Az = Acc_z / 16384.0f;
 
     // Disable
     Gx = Gyro_x / 131.0f;
@@ -108,13 +108,13 @@ void loop_accel() {
     // printf("\n Gx=%.3f °/s\tGy=%.3f °/s\tGz=%.3f °/s\tAx=%.3f g\tAy=%.3f g\tAz=%.3f g\n",Gx,Gy,Gz,Ax,Ay,Az);
 
     // Disable
-    float mag2 = std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz));
-    float mag3 = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
+    float G_mag = std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz));
+    // float mag3 = std::sqrt(std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az)) + std::sqrt((Gx*Gx) + (Gy*Gy) + (Gz*Gz)));
     
-    float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
-    printf("|%f|%f|%f|\n", mag, mag2, mag3);
+    // float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
+    // printf("|%f|%f|%f|\n", mag, mag2, mag3);
 
-    if (mag >= 1.1f) {
+    if (G_mag >= 2.0f) {
         trigger_vibrato();
     }
 
