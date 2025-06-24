@@ -31,13 +31,13 @@ const std::vector<ChordPattern> CHORD_PATTERNS = {
     {"5"       , {7}      , true , {{4, ""}, {3, "m"}}},               // Power chord
     {""        , {4, 3}   , true , {{10, "7"}, {11, "maj7"}}},         // Major
     {"m"       , {3, 4}   , true , {{10, "m7"}, {11, "mMaj7"}}},       // Minor
-    {"dim"     , {3, 3}   , true , {{9, "°7"}, {10, "m7(b5)"}}},       // Diminished
+    {"dim"     , {3, 3}   , true , {{9, "dim7"}, {10, "m7(b5)"}}},       // Diminished
     {"aug"     , {4, 4}   , true , {{10, "7(#5)"}, {11, "maj7(#5)"}}}, // Augmented
     {"7"       , {4, 3, 3}, false}, // Dominant 7th
     {"maj7"    , {4, 3, 4}, false}, // Major 7th
     {"m7"      , {3, 4, 3}, false}, // Minor 7th
     {"mMaj7"   , {3, 4, 4}, false}, // Minor Major 7th
-    {"°7"      , {3, 3, 3}, false}, // Diminished 7th
+    {"dim7"      , {3, 3, 3}, false}, // Diminished 7th
     {"m7(b5)"  , {3, 3, 4}, false}, // Half Diminished 7th
     {"7(#5)"   , {4, 4, 2}, false}, // Dominant 7th Sharp 5
     {"maj7(#5)", {4, 4, 3}, false}  // Major 7th Sharp 5
