@@ -69,12 +69,14 @@ static uint8_t scale[] = {1, 4, 6, 7, 11};
 static void light_off_led(uint8_t index) {
     for (const auto& scale_key : scale) {
         if (scale_key == index) {
-            ledstring.channel[0].leds[index] = LED_COLOR_SCALE;
+            uint8_t led_i = key_leds[scale_key];
+            ledstring.channel[0].leds[led_i] = LED_COLOR_SCALE;
             return;
         }
     }
 
-    ledstring.channel[0].leds[index] = LED_COLOR_BLK;
+    uint8_t led_i = key_leds[index];
+    ledstring.channel[0].leds[led_i] = LED_COLOR_BLK;
 }
 
 uint8_t init_led() {
@@ -102,11 +104,10 @@ void cleanup_led() {
 }
 
 void set_led(uint8_t index, bool state) {
-    uint8_t  led_i = key_leds[index];
-
     if (!state) {
-        light_off_led(led_i);
+        light_off_led(index);
     } else {
+        uint8_t led_i = key_leds[index];
         ledstring.channel[0].leds[led_i] = LED_COLOR;
     }
 
