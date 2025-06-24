@@ -57,62 +57,62 @@ all: $(TARGET)
 # Link object files to create executable
 $(TARGET): $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(ANALOG_OBJ)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(ANALOG_OBJ) $(LIBS) $(LED_LIB_PATH)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ) $(KEYS_OBJ) $(SIGN_OBJ) $(SOUND_OBJ) $(TOUCH_OBJ) $(ACCEL_OBJ) $(DISP_OBJ) $(THEORY_OBJ) $(CAM_OBJ) $(LED_OBJ) $(ANALOG_OBJ) $(LIBS) $(LED_LIB_PATH) -g
 
 # Compile main file into object file
 $(OBJ): $(SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(SRC) -o $(OBJ)
+	$(CXX) $(CXXFLAGS) -c $(SRC) -o $(OBJ) -g
 
 # Compile keys module
 $(KEYS_OBJ): $(KEYS_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(KEYS_SRC) -o $(KEYS_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(KEYS_SRC) -o $(KEYS_OBJ) -g
 
 # Compile signal module
 $(SIGN_OBJ): $(SIGN_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(SIGN_SRC) -o $(SIGN_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(SIGN_SRC) -o $(SIGN_OBJ) -g
 
 # Compile sound module
 $(SOUND_OBJ): $(SOUND_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(SOUND_SRC) -o $(SOUND_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(SOUND_SRC) -o $(SOUND_OBJ) -g
 
 # Compile touch module
 $(TOUCH_OBJ): $(TOUCH_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(TOUCH_SRC) -o $(TOUCH_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(TOUCH_SRC) -o $(TOUCH_OBJ) -g
 
 # Compile accel module
 $(ACCEL_OBJ): $(ACCEL_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(ACCEL_SRC) -o $(ACCEL_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(ACCEL_SRC) -o $(ACCEL_OBJ) -g
 
 # Compile disp module
 $(DISP_OBJ): $(DISP_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(DISP_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(DISP_SRC) -o $(DISP_OBJ) -g
 
 # Compile theory module
 $(THEORY_OBJ): $(THEORY_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(THEORY_SRC) -o $(THEORY_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(THEORY_SRC) -o $(THEORY_OBJ) -g
 
 # Compile camera module
 $(CAM_OBJ): $(CAM_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(CAM_SRC) -o $(CAM_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(CAM_SRC) -o $(CAM_OBJ) -g
 
 # Compile led module
 $(LED_OBJ): $(LED_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(LED_SRC) -o $(LED_OBJ) $(LED_LIB_PATH)
+	$(CXX) $(CXXFLAGS) -c $(LED_SRC) -o $(LED_OBJ) $(LED_LIB_PATH) -g
 
 # Compile analog potentiometers module
 $(ANALOG_OBJ): $(ANALOG_SRC)
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $(ANALOG_SRC) -o $(ANALOG_OBJ)
+	$(CXX) $(CXXFLAGS) -c $(ANALOG_SRC) -o $(ANALOG_OBJ) -g
 
 # Clean up build files
 clean:
