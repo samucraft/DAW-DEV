@@ -110,7 +110,8 @@ static void update_suggestions(uint8_t idx_1, uint8_t idx_2) {
 static void determine_chord() {
     int interval;
     std::string chord, composition;
-    std::string sug1, sug2;
+    std::string sug1_c, sug1_d;
+    std::string sug2_c, sug2_d;
     uint8_t sug1_idx, sug2_idx;
 
     if (pressed_keys.size() == 0) {
@@ -118,7 +119,8 @@ static void determine_chord() {
 
         set_chord("t0.txt=\"-\"", "t1.txt=\"-\"");
 
-        set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
+        set_suggestions("t2.txt=\"-\"", "t3.txt=\"-\"");
+        set_suggestions("t4.txt=\"-\"", "t5.txt=\"-\"");
         turn_off_suggestions();
         return;
     } else if (pressed_keys.size() == 1) {
@@ -135,27 +137,28 @@ static void determine_chord() {
         sug1_idx = get_key_suggestion_index(pressed_keys[0], 4);
         sug2_idx = get_key_suggestion_index(pressed_keys[0], 3);
 
-        sug1 = "b3.txt=\"(";
-        sug1 += keys[pressed_keys[0]].name;
-        // Temporarily add this for UI
-        sug1 += ")";
-        sug1 += keys[pressed_keys[0]].name;
-        sug1 += "->";
-        sug1 += keys[sug1_idx].name;
-        //
-        sug1 += "\"";
+        sug1_c = "t2.txt=\"";
+        sug1_c += keys[pressed_keys[0]].name;
+        sug1_c += "\"";
 
-        sug2 = "b4.txt=\"(";
-        sug2 += keys[pressed_keys[0]].name;
-        sug2 += "m";
-        // Temporarily add this for UI
-        sug2 += ")";
-        sug2 += keys[pressed_keys[0]].name;
-        sug2 += "->";
-        sug2 += keys[sug2_idx].name;
-        //
-        sug2 += "\"";
-        set_suggestions(sug1, sug2);
+        sug1_d = "t3.txt=\"";
+        sug1_d += keys[pressed_keys[0]].name;
+        sug1_d += "->";
+        sug1_d += keys[sug1_idx].name;
+        sug1_d += "\"";
+
+        sug2_c = "t4.txt=\"";
+        sug2_c += keys[pressed_keys[0]].name;
+        sug2_c += "\"";
+
+        sug2_d = "t5.txt=\"";
+        sug2_d += keys[pressed_keys[0]].name;
+        sug2_d += "->";
+        sug2_d += keys[sug1_idx].name;
+        sug2_d += "\"";
+
+        set_suggestions(sug1_c, sug1_d);
+        set_suggestions(sug2_c, sug2_d);
 
         update_suggestions(sug1_idx, sug2_idx);
         return;
@@ -209,41 +212,44 @@ static void determine_chord() {
                 composition += "\"";
                 set_chord(chord, composition);
 
-                sug1 = "b3.txt=\"(";
-                sug2 = "b4.txt=\"(";
+                sug1_c = "t2.txt=\"";
+                sug1_d = "t3.txt=\"";
+                sug2_c = "t4.txt=\"";
+                sug2_d = "t5.txt=\"";
                 if (pattern.has_suggestions) {
                     sug1_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[0].interval_from_root);
                     sug2_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[1].interval_from_root);
 
-                    sug1 += keys[pressed_keys[0]].name;
-                    sug1 += pattern.suggestions[0].suffix;
-                    // Temporarily add this for UI
-                    sug1 += ")";
-                    sug1 += composition_str;
-                    sug1 += "->";
-                    sug1 += keys[sug1_idx].name;
-                    //
-                    sug1 += "\"";
+                    sug1_c += keys[pressed_keys[0]].name;
+                    sug1_c += pattern.suggestions[0].suffix;
+                    sug1_c += "\"";
 
-                    sug2 += keys[pressed_keys[0]].name;
-                    sug2 += pattern.suggestions[1].suffix;
-                    // Temporarily add this for UI
-                    sug2 += ")";
-                    sug2 += composition_str;
-                    sug2 += "->";
-                    sug2 += keys[sug2_idx].name;
-                    //
-                    sug2 += "\"";
+                    sug1_d += composition_str;
+                    sug1_d += "->";
+                    sug1_d += keys[sug1_idx].name;
+                    sug1_d += "\"";
+
+                    sug2_c += keys[pressed_keys[0]].name;
+                    sug2_c += pattern.suggestions[0].suffix;
+                    sug2_c += "\"";
+
+                    sug2_d += composition_str;
+                    sug2_d += "->";
+                    sug2_d += keys[sug1_idx].name;
+                    sug2_d += "\"";
 
                     update_suggestions(sug1_idx, sug2_idx);
                 } else {
-                    sug1 += "-\"";
-                    sug2 += "-\"";
+                    sug1_c += "-\"";
+                    sug1_d += "-\"";
+                    sug2_c += "-\"";
+                    sug2_d += "-\"";
                     turn_off_suggestions();
                 }
-                set_suggestions(sug1, sug2);
+                set_suggestions(sug1_c, sug1_d);
+                set_suggestions(sug2_c, sug2_d);
                 return;
             }
         }
@@ -262,7 +268,8 @@ static void determine_chord() {
     composition += "\"";
     set_chord("t0.txt=\"?\"", composition);
 
-    set_suggestions("b3.txt=\"-\"", "b4.txt=\"-\"");
+    set_suggestions("t2.txt=\"-\"", "t3.txt=\"-\"");
+    set_suggestions("t4.txt=\"-\"", "t5.txt=\"-\"");
     turn_off_suggestions();
 }
 
