@@ -114,7 +114,7 @@ void loop_accel() {
     // float mag = std::sqrt((Ax*Ax) + (Ay*Ay) + (Az*Az));
     // printf("|%f|%f|%f|\n", mag, mag2, mag3);
 
-    if (G_mag >= 2.0f) {
+    if (G_mag >= 4.0f) {
         trigger_vibrato();
     }
 
