@@ -132,16 +132,31 @@ static void determine_chord(key keys[]) {
         composition += "\"";
         set_chord(chord, composition);
 
-        sug1 = "b3.txt=\"";
-        sug1 += keys[pressed_keys[0]].name;
-        sug1 += "\"";
-        sug2 = "b4.txt=\"";
-        sug2 += keys[pressed_keys[0]].name;
-        sug2 += "m\"";
-        set_suggestions(sug1, sug2);
-
         sug1_idx = get_key_suggestion_index(pressed_keys[0], 4);
         sug2_idx = get_key_suggestion_index(pressed_keys[0], 3);
+
+        sug1 = "b3.txt=\"(";
+        sug1 += keys[pressed_keys[0]].name;
+        // Temporarily add this for UI
+        sug1 += ")";
+        sug1 += keys[pressed_keys[0]].name;
+        sug1 += "->";
+        sug1 += keys[sug1_idx].name;
+        //
+        sug1 += "\"";
+
+        sug2 = "b4.txt=\"(";
+        sug2 += keys[pressed_keys[0]].name;
+        sug2 += "m";
+        // Temporarily add this for UI
+        sug2 += ")";
+        sug2 += keys[pressed_keys[0]].name;
+        sug2 += "->";
+        sug2 += keys[sug2_idx].name;
+        //
+        sug2 += "\"";
+        set_suggestions(sug1, sug2);
+
         update_suggestions(sug1_idx, sug2_idx);
         return;
     }
@@ -182,31 +197,46 @@ static void determine_chord(key keys[]) {
                 chord += chord_str;
                 chord += "\"";
                 composition = "t1.txt=\"";
+                std::string composition_str;
                 size_t i = 0;
                 while (i < pressed_keys.size() - 1) {
-                    composition += keys[pressed_keys[i]].name;
-                    composition += "->";
+                    composition_str += keys[pressed_keys[i]].name;
+                    composition_str += "->";
                     i++;
                 }
-                composition += keys[pressed_keys[i]].name;
+                composition_str += keys[pressed_keys[i]].name;
+                composition += composition_str;
                 composition += "\"";
                 set_chord(chord, composition);
 
-                sug1 = "b3.txt=\"";
-                sug2 = "b4.txt=\"";
+                sug1 = "b3.txt=\"(";
+                sug2 = "b4.txt=\"(";
                 if (pattern.has_suggestions) {
-                    sug1 += keys[pressed_keys[0]].name;
-                    sug1 += pattern.suggestions[0].suffix;
-                    sug1 += "\"";
-
-                    sug2 += keys[pressed_keys[0]].name;
-                    sug2 += pattern.suggestions[1].suffix;
-                    sug2 += "\"";
-
                     sug1_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[0].interval_from_root);
                     sug2_idx = get_key_suggestion_index(rotated[0],
                                     pattern.suggestions[1].interval_from_root);
+
+                    sug1 += keys[pressed_keys[0]].name;
+                    sug1 += pattern.suggestions[0].suffix;
+                    // Temporarily add this for UI
+                    sug1 += ")";
+                    sug1 += composition_str;
+                    sug1 += "->";
+                    sug1 += keys[sug1_idx].name;
+                    //
+                    sug1 += "\"";
+
+                    sug2 += keys[pressed_keys[0]].name;
+                    sug2 += pattern.suggestions[1].suffix;
+                    // Temporarily add this for UI
+                    sug2 += ")";
+                    sug2 += composition_str;
+                    sug2 += "->";
+                    sug2 += keys[sug2_idx].name;
+                    //
+                    sug2 += "\"";
+
                     update_suggestions(sug1_idx, sug2_idx);
                 } else {
                     sug1 += "-\"";
