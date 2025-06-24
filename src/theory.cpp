@@ -181,7 +181,7 @@ static void determine_chord(key keys[]) {
                 sug2 += keys[pressed_keys[0]].name;
                 if (pattern.has_suggestions) {
                     sug1 += pattern.suggestions[0].suffix;
-                    sug1 += pattern.suggestions[1].suffix;
+                    sug2 += pattern.suggestions[1].suffix;
                 }
                 sug1 += "\"";
                 sug2 += "\"";
