@@ -21,8 +21,8 @@ int main() {
     RET_IF_ERR(init_disp());
     RET_IF_ERR(init_led());
     RET_IF_ERR(init_analog());
-    // init_touch();
-    // init_accel();
+    init_touch();
+    init_accel();
     init_cam();
 
     // Register the signal handler for SIGINT
@@ -30,8 +30,8 @@ int main() {
 
     while (true) {
         loop_keys();
-        // loop_touch();
-        // loop_accel();
+        loop_touch();
+        loop_accel();
         loop_analog();
 
         cam_check_gesture();
