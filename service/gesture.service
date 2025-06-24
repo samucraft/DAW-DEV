@@ -1,10 +1,9 @@
 [Unit]
-Description=DAW Device
+Description=DAW Device - Gesture Detector
 After=network-online.target
-After=gesture.service
 
 [Service]
-ExecStart=/bin/bash /home/gsmuga3/workdir/github/DAW-DEV/service/service
+ExecStart=/bin/bash /home/gsmuga3/workdir/github/DAW-DEV/service/gestures
 WorkingDirectory=/home/gsmuga3/workdir/github/DAW-DEV/
 StandardOutput=inherit
 StandardError=inherit
@@ -13,4 +12,3 @@ User=gsmuga3
 
 [Install]
 WantedBy=multi-user.target
-

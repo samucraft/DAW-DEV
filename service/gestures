@@ -2,7 +2,7 @@
 
 # Absolute or relative path to your project directory
 PROJECT_DIR="/home/gsmuga3/workdir/github/DAW-DEV"
-EXECUTABLE="sudo ./bin/main"
+EXECUTABLE="python3 gesture_detection/gesture_detection.py"
 
 cd "$PROJECT_DIR" || { echo "Failed to cd to $PROJECT_DIR"; exit 1; }
 
