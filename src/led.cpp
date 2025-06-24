@@ -98,6 +98,7 @@ void light_suggestions(uint8_t idx_1, uint8_t idx_2) {
 
     ledstring.channel[0].leds[led_1] = LED_COLOR_SUG1;
     ledstring.channel[0].leds[led_2] = LED_COLOR_SUG2;
+    ws2811_render(&ledstring);
 
     last_sug1 = idx_1;
     last_sug2 = idx_2;
