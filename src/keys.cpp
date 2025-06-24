@@ -80,7 +80,6 @@ uint8_t init_keys() {
 void loop_keys() {
     uint8_t curr_state;
     uint16_t data = read_data();
-    printf("%08x\n", data);
 
     bool state_changed = false;
     for (size_t i = 0; i < MAX_KEYS; i++) {
@@ -99,6 +98,6 @@ void loop_keys() {
     }
 
     if (state_changed) {
-        update_music_state(keys);
+        update_music_state();
     }
 }

@@ -55,7 +55,7 @@ static std::wstring get_state_str(bool state) {
     return L" ";
 }
 
-static void print_current_state(key keys[]) {
+static void print_current_state() {
     std::wcout << "  [" << get_state_str(keys[1].state);
     std::wcout << "] [" << get_state_str(keys[3].state);
     std::wcout << "]     [" << get_state_str(keys[6].state);
@@ -71,7 +71,7 @@ static void print_current_state(key keys[]) {
     std::wcout << "] [" << get_state_str(keys[11].state) << "]" << std::endl;
 }
 
-static void get_pressed_keys(key keys[]) {
+static void get_pressed_keys() {
     pressed_keys.clear();
 
     bool first = true;
@@ -107,7 +107,7 @@ static void update_suggestions(uint8_t idx_1, uint8_t idx_2) {
     light_suggestions(idx_1, idx_2);
 }
 
-static void determine_chord(key keys[]) {
+static void determine_chord() {
     int interval;
     std::string chord, composition;
     std::string sug1, sug2;
@@ -266,13 +266,13 @@ static void determine_chord(key keys[]) {
     turn_off_suggestions();
 }
 
-void update_music_state(key keys[]) {
+void update_music_state() {
     std::cout << std::endl << " > Current state:" << std::endl;
-    print_current_state(keys);
+    print_current_state();
 
     std::cout << " > Pressed keys:" << std::endl;
-    get_pressed_keys(keys);
+    get_pressed_keys();
 
     std::cout << " > Current chord (C key):" << std::endl;
-    determine_chord(keys);
+    determine_chord();
 }
