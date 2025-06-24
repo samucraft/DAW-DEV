@@ -1,10 +1,10 @@
 [Unit]
 Description=DAW Device
 After=network-online.target
-After=gesture.service
+Requires=gesture.service
 
 [Service]
-ExecStart=/bin/bash /home/gsmuga3/workdir/github/DAW-DEV/service/service
+ExecStart=/usr/bin/sleep 5 && /bin/bash /home/gsmuga3/workdir/github/DAW-DEV/service/service
 WorkingDirectory=/home/gsmuga3/workdir/github/DAW-DEV/
 StandardOutput=inherit
 StandardError=inherit
