@@ -527,7 +527,7 @@ void change_frequency(bool increase) {
         mod = 2.0f;
         octave_increment++;
     } else if (!increase && (octave_increment > MAX_DEC_OCTAVE)) {
-        mod = -2.0f;
+        mod = 0.5f;
         octave_increment--;
     } else {
         return;
